@@ -21,10 +21,32 @@ app.get('/hello', (req, res) => {
     res.status(200).json({ message: 'waotd' })
 })
 
+function getCardPrompts(){
+    return { 
+        title: 'AM HOF',
+        color: "red",
+        rent0: "60",
+        rentSet: "120",
+        rent1: "180",
+        rent2: "300",
+        rent3: "450",
+        rent4: "600",
+        rentH: "750",
+        housecost: "100",
+        hotelcost: "100",
+        currency: 'fa-light fa-dollar-sign',
+    }
+}
+
 async function doHTML(){
-    const path = "resources\\index.html"
-    const html = await getHtmlFromFileOnDisk(path)
-    await createImageFromHtml(html)
+    // const path = "resources\\index.html"
+    // const html = await getHtmlFromFileOnDisk(path)
+    // await createImageFromHtml(html)
+
+    const cardpath = "resources\\card.html"
+    const cardhtml = await getHtmlFromFileOnDisk(cardpath)
+    const cardPrompts = getCardPrompts()
+    await createCardFromHtml(cardhtml,cardPrompts)
 
 }
 
@@ -98,8 +120,8 @@ async function createImageFromHtml(htmlin) {
             tax1: "tax1",
             tax2: "tax2",
 
-            jail: "azkaban",
-            parking: "style",
+            jail: "jail",
+            parking: "parking",
 
             browncolor: "brown",
             cyancolor: "cyan",
@@ -118,6 +140,30 @@ async function createImageFromHtml(htmlin) {
             tax2color: "purple",
             parkingcolor: "green",
             gojailcolor: "red",
+        },
+        // encoding: 'base64',
+        puppeteerArgs: { args: ["--no-sandbox"] }
+      })
+    return image;
+}
+
+async function createCardFromHtml(htmlin,cardPrompts) {
+    const image = await nodeHtmlToImage({
+        output: './card'+ getTimeInMiliseconds() +'.png' ,
+        html: htmlin,
+        content: { 
+            title: cardPrompts.title,
+            color: cardPrompts.color,
+            rent0: cardPrompts.rent0,
+            rentSet: cardPrompts.rentSet,
+            rent1: cardPrompts.rent1,
+            rent2: cardPrompts.rent2,
+            rent3: cardPrompts.rent3,
+            rent4: cardPrompts.rent4,
+            rentH: cardPrompts.rentH,
+            housecost: cardPrompts.housecost,
+            hotelcost: cardPrompts.hotelcost,
+            currency: cardPrompts.currency,
         },
         // encoding: 'base64',
         puppeteerArgs: { args: ["--no-sandbox"] }
