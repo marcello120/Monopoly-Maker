@@ -2,6 +2,8 @@ import './App.css';
 import React, { useState, useEffect } from 'react'
 import DualPropertyInput from './components/DualPropertyInput';
 import TriplePropertyInput from './components/TriplePropertyInput';
+import axios from 'axios';
+
 
 
 
@@ -9,7 +11,7 @@ function App() {
 
   const [master, setMaster] = useState(
     {
-      title: 'Gangopoly',
+      title: 'Printopoly',
       currency: 'fa-solid fa-sterling-sign',
 
       railicon: 'fa-solid fa-train fa-5x',
@@ -60,24 +62,30 @@ function App() {
       parking: "parking",
 
       browncolor: "#964B00",
-      cyancolor: "cyan",
-      purplecolor: "purple",
-      orangecolor: "orange",
-      redcolor: "red",
-      yellowcolor: "yellow",
-      greencolor: "green",
-      bluecolor: "blue",
-      railcolor: "black",
-      util1color: "yellow",
-      util2color: "blue",
-      chancecolor: "orange",
-      chestcolor: "blue",
-      tax1color: "orange",
-      tax2color: "purple",
-      parkingcolor: "green",
-      gojailcolor: "red",
+      cyancolor: "#00FFFF",
+      purplecolor: "#6a0dad",
+      orangecolor: "#FFA500",
+      redcolor: "#FF0000",
+      yellowcolor: "#FFFF00",
+      greencolor: "#00FF00",
+      bluecolor: "#0000FF",
+      railcolor: "#000000",
+      util1color: "#FFFF00",
+      util2color: "#0000FF",
+      chancecolor: "#FFA500",
+      chestcolor: "#0000FF",
+      tax1color: "#FFA500",
+      tax2color: "#6a0dad",
+      parkingcolor: "#FF0000",
+      gojailcolor: "#000000",
     }
   );
+
+  const postData = async () => {
+    const response = await axios.post('http://localhost:5000/create', {printopoly:master});
+    console.log(response);
+  }
+
 
   
 
@@ -85,13 +93,31 @@ function App() {
 
   return (
     <div className="App">
+      <div className='left'>
+      <h1>Title</h1>
+      <div>
+                <label> Title: </label>
+                <input
+                    value={master.title}
+                    type="text"
+                    onChange={e => setMaster({ ...master, title: e.target.value })}
+                    name="title"
+                />
+            </div>
       <h1>Properties</h1>
-      <h2>Property group 1</h2>
-      <DualPropertyInput incolor = {"brown"} master={master} setMaster={setMaster}></DualPropertyInput>
-      <h2>Property group 2</h2>
-      <TriplePropertyInput incolor = {"cyan"} master={master} setMaster={setMaster}></TriplePropertyInput>
-
+      <DualPropertyInput number={1} incolor = {"brown"} master={master} setMaster={setMaster}></DualPropertyInput>
+      <TriplePropertyInput number={2} incolor = {"cyan"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <TriplePropertyInput number={3} incolor = {"purple"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <TriplePropertyInput number={4} incolor = {"orange"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <TriplePropertyInput number={5} incolor = {"red"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <TriplePropertyInput number={6} incolor = {"yellow"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <TriplePropertyInput number={7} incolor = {"green"} master={master} setMaster={setMaster}></TriplePropertyInput>
+      <DualPropertyInput number={8} incolor = {"blue"} master={master} setMaster={setMaster}></DualPropertyInput>
+      <button onClick={postData}>Post</button>
+      </div>
+      <div className='right'>
       <pre>{JSON.stringify(master, null, 2)}</pre>
+      </div>
 
     </div>
   );

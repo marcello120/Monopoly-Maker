@@ -11,6 +11,7 @@ require('dotenv').config();
 const app = express()
 
 app.use(cors)
+app.use(express.json())
 
 app.listen(process.env.PORT || 5000)
 
@@ -19,6 +20,18 @@ app.get('/hello', (req, res) => {
     console.log("hello");
     doHTML()
     res.status(200).json({ message: 'waotd' })
+})
+
+app.get('/card', (req, res) => {
+    console.log("card");
+    doHTML()
+    res.status(200).json({ message: 'waotd' })
+})
+
+app.post('/create', (req, res) => {
+    console.log(req.body);
+    doHTMLWithArgs(req.body.printopoly)
+    res.status(200).json({ message: req.body.printopoly })
 })
 
 function getCardPrompts(){
@@ -50,6 +63,18 @@ async function doHTML(){
 
 }
 
+async function doHTMLWithArgs(args){
+    const path = "resources\\index.html"
+    const html = await getHtmlFromFileOnDisk(path)
+    await createImageFromHtmlWithArgs(html,args)
+
+    // const cardpath = "resources\\card.html"
+    // const cardhtml = await getHtmlFromFileOnDisk(cardpath)
+    // const cardPrompts = getCardPrompts()
+    // await createCardFromHtml(cardhtml,cardPrompts)
+
+}
+
 //get htmlfrom file on disk
 async function getHtmlFromFileOnDisk(filepath) {
     return new Promise((resolve, reject) => {
@@ -65,6 +90,17 @@ async function getHtmlFromFileOnDisk(filepath) {
 
 function getTimeInMiliseconds() {
     return new Date().getTime()
+}
+
+async function createImageFromHtmlWithArgs(htmlin, contentin) {
+    const image = await nodeHtmlToImage({
+        output: './image'+ getTimeInMiliseconds() +'.png' ,
+        html: htmlin,
+        content: contentin,
+        // encoding: 'base64',
+        puppeteerArgs: { args: ["--no-sandbox"] }
+      })
+    return image;
 }
 
 //create image from html
@@ -123,29 +159,31 @@ async function createImageFromHtml(htmlin) {
             jail: "jail",
             parking: "parking",
 
-            browncolor: "brown",
-            cyancolor: "cyan",
-            purplecolor: "purple",
-            orangecolor: "orange",
-            redcolor: "red",
-            yellowcolor: "yellow",
-            greencolor: "green",
-            bluecolor: "blue",
-            railcolor: "black",
-            util1color: "yellow",
-            util2color: "blue",
-            chancecolor: "orange",
-            chestcolor: "blue",
-            tax1color: "orange",
-            tax2color: "purple",
-            parkingcolor: "green",
-            gojailcolor: "red",
+            browncolor: "#964B00",
+            cyancolor: "#00FFFF",
+            purplecolor: "#6a0dad",
+            orangecolor: "#FFA500",
+            redcolor: "#FF0000",
+            yellowcolor: "#FFFF00",
+            greencolor: "#00FF00",
+            bluecolor: "#0000FF",
+            railcolor: "#000000",
+            util1color: "#FFFF00",
+            util2color: "#0000FF",
+            chancecolor: "#FFA500",
+            chestcolor: "#0000FF",
+            tax1color: "#FFA500",
+            tax2color: "#6a0dad",
+            parkingcolor: "#FF0000",
+            gojailcolor: "#000000",
         },
         // encoding: 'base64',
         puppeteerArgs: { args: ["--no-sandbox"] }
       })
     return image;
 }
+
+
 
 async function createCardFromHtml(htmlin,cardPrompts) {
     const image = await nodeHtmlToImage({
