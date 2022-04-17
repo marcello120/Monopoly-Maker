@@ -3,6 +3,12 @@ import React, { useState, useEffect } from 'react'
 import DualPropertyInput from './components/DualPropertyInput';
 import TriplePropertyInput from './components/TriplePropertyInput';
 import axios from 'axios';
+import IconChooser from './components/IconChooser';
+import { IconPicker } from 'react-fa-icon-picker'
+import Icon from './components/Icon';
+import *  as IconPack from 'react-icons/fa';
+import DualPropertyInputWithIcon from './components/DualPropertyInputWithIcon';
+
 
 
 
@@ -82,41 +88,58 @@ function App() {
   );
 
   const postData = async () => {
-    const response = await axios.post('http://localhost:5000/create', {printopoly:master});
+    const response = await axios.post('http://localhost:5000/create', { printopoly: master });
     console.log(response);
   }
 
+  const icons = [
+    "&#xf2bb;",
+  ]
 
-  
+  const [value, setValue] = useState("FaBeer")
 
+  const printValue = () => {
+    console.log(value);
+    console.log(toKebabCase(value));
+  }
+
+  function toKebabCase(str) {
+    return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+  }
 
 
   return (
     <div className="App">
       <div className='left'>
-      <h1>Title</h1>
-      <div>
-                <label> Title: </label>
-                <input
-                    value={master.title}
-                    type="text"
-                    onChange={e => setMaster({ ...master, title: e.target.value })}
-                    name="title"
-                />
-            </div>
-      <h1>Properties</h1>
-      <DualPropertyInput number={1} incolor = {"brown"} master={master} setMaster={setMaster}></DualPropertyInput>
-      <TriplePropertyInput number={2} incolor = {"cyan"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <TriplePropertyInput number={3} incolor = {"purple"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <TriplePropertyInput number={4} incolor = {"orange"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <TriplePropertyInput number={5} incolor = {"red"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <TriplePropertyInput number={6} incolor = {"yellow"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <TriplePropertyInput number={7} incolor = {"green"} master={master} setMaster={setMaster}></TriplePropertyInput>
-      <DualPropertyInput number={8} incolor = {"blue"} master={master} setMaster={setMaster}></DualPropertyInput>
-      <button onClick={postData}>Post</button>
+        <h1>Title</h1>
+        <div>
+          <label> Title: </label>
+          <input
+            value={master.title}
+            type="text"
+            onChange={e => setMaster({ ...master, title: e.target.value })}
+            name="title"
+          />
+        </div>
+        
+        <h1>Transportation</h1>
+
+        <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster}></DualPropertyInputWithIcon>
+        
+        <h1>Properties</h1>   
+        <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster}></DualPropertyInput>
+        <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <TriplePropertyInput number={4} incolor={"orange"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <TriplePropertyInput number={5} incolor={"red"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <TriplePropertyInput number={6} incolor={"yellow"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster}></TriplePropertyInput>
+        <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster}></DualPropertyInput>
+
+        <button onClick={postData}>Post</button>
       </div>
       <div className='right'>
-      <pre>{JSON.stringify(master, null, 2)}</pre>
+        <pre>{JSON.stringify(master, null, 2)}</pre>
       </div>
 
     </div>

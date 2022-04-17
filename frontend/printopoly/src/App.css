@@ -51,3 +51,10 @@
   right: 0;
   overflow: auto;
 }
+
+
+.center{
+  margin: auto;
+  width: 15%;
+  padding: 10px;
+}
