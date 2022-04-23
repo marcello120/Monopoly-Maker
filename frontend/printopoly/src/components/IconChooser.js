@@ -12,24 +12,24 @@ const IconChooser = (props) => {
     // iconColor={propertycolor1} >
     // </IconChooser>
 
-    const camelize = (s) => {
-        const word = s.split(' ')[1].replace(/-./g, x => x[1].toUpperCase())
-        console.log(word)
-        return word.charAt(0).toUpperCase() + word.slice(1);
-    }
+    // const camelize = (s) => {
+    //     const word = s.split(' ')[1].replace(/-./g, x => x[1].toUpperCase())
+    //     console.log(word)
+    //     return word.charAt(0).toUpperCase() + word.slice(1);
+    // }
 
-    const toKebabCase = (s) => {
-        const word = s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        console.log(word);
-        return "fa-solid " + word + " fa-5x";
-    }
+    // const toKebabCase = (s) => {
+    //     const word = s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    //     console.log(word);
+    //     return "fa-solid " + word + " fa-5x";
+    // }
 
     //kebab case to camel case
 
 
     return (
         <div>
-            <div>{camelize(props.master[props.iconName])}</div>
+            <div>{props.master[props.iconName]}</div>
             <div className='center'>
                 <div>Choose Icon:</div>
                 <div style={{ display: 'flex', justifyContent: "center" }}>
@@ -39,14 +39,16 @@ const IconChooser = (props) => {
                             name={props.iconColor}
                             value={props.master[props.iconColor]}
                             onChange={e => props.setMaster({ ...props.master, [props.iconColor]: e.target.value })}
+                            onFocus={e => props.scroll()}
                         />                        
                         <IconPicker
-                            value={camelize(props.master[props.iconName])}
-                            onChange={(v) => props.setMaster({ ...props.master, [props.iconName]: toKebabCase(v) })}
+                            value={props.master[props.iconName]}
+                            onChange={(v) => props.setMaster({ ...props.master, [props.iconName]: v })}
+                            onFocus={e => props.scroll()}
                         />
                     </div>
                     <span style={{ padding: 10 }}>
-                        <Icon iconName={camelize(props.master[props.iconName])} size={50} color={props.master[props.iconColor]} />
+                        <Icon iconName={props.master[props.iconName]} size={50} color={props.master[props.iconColor]} />
                     </span>
                 </div>
             </div>

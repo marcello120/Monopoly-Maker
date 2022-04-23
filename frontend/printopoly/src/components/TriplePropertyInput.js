@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 
-const DualPropertyInput = (props) => {
+const TriplePropertyInput = (props) => {
 
   const incolor = props.incolor;
   const property1 = incolor + 1;
@@ -25,6 +25,7 @@ const DualPropertyInput = (props) => {
           name={propertyColor}
           value={props.master[propertyColor]}
           onChange={e => props.setMaster({ ...props.master, [propertyColor]: e.target.value })}
+          onFocus={e => props.scroll()}
         />
       </div>
       <div>
@@ -34,6 +35,7 @@ const DualPropertyInput = (props) => {
           type="text"
           onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
           name={property1}
+          onFocus={e => props.scroll()}
         />
       </div>
       <div>
@@ -43,6 +45,7 @@ const DualPropertyInput = (props) => {
           type="text"
           onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}
           name={property2}
+          onFocus={e => props.scroll()}
         />
       </div>
       <div>
@@ -52,10 +55,11 @@ const DualPropertyInput = (props) => {
           type="text"
           onChange={e => props.setMaster({ ...props.master, [property3]: e.target.value })}
           name={property3}
+          onFocus={e => props.scroll()}
         />
       </div>
     </div>
   )
 }
 
-export default DualPropertyInput
+export default TriplePropertyInput

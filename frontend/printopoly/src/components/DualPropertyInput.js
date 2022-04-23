@@ -23,6 +23,7 @@ const DualPropertyInput = (props) => {
                     name={propertyColor}
                     value={props.master[propertyColor]}
                     onChange={e => props.setMaster({ ...props.master, [propertyColor]: e.target.value })}
+                    onFocus={e => props.scroll()}
                 />
             </div>
             <div>
@@ -32,6 +33,7 @@ const DualPropertyInput = (props) => {
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
                     name={property1}
+                    onFocus={e => props.scroll()}
                 />
             </div>
             <div>
@@ -41,6 +43,7 @@ const DualPropertyInput = (props) => {
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}
                     name={property2}
+                    onFocus={e => props.scroll()}
                 />
             </div>
         </div>

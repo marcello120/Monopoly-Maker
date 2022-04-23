@@ -21,7 +21,7 @@ const DualPropertyInputWithIcon = (props) => {
             <div>
                 <h4>  {props.title }/1 </h4>
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon1} iconColor={propertycolor1} ></IconChooser>
-                <label> Title: </label>
+                <label> {incolor + " 1:"} </label>
                 <input
                     value={props.master[property1]}
                     type="text"
@@ -32,7 +32,7 @@ const DualPropertyInputWithIcon = (props) => {
             <div>
                 <h4> {props.title }/2 </h4>
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon2} iconColor={propertycolor2} ></IconChooser>
-                <label> Title: </label>
+                <label> {incolor + " 2:"} </label>
                 <input
                     value={props.master[property2]}
                     type="text"

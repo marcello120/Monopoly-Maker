@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import DualPropertyInput from './components/DualPropertyInput';
 import TriplePropertyInput from './components/TriplePropertyInput';
 import axios from 'axios';
@@ -8,6 +8,10 @@ import { IconPicker } from 'react-fa-icon-picker'
 import Icon from './components/Icon';
 import *  as IconPack from 'react-icons/fa';
 import DualPropertyInputWithIcon from './components/DualPropertyInputWithIcon';
+import SinglePropertyInputWithIcon from './components/SinglePropertyInputWithIcon';
+import QuadPropertyInputWithIcon from './components/QuadPropertyInputWithIcon';
+import TilePreview from './components/TilePreview';
+import TilePreviewWithIcon from './components/TilePreviewWithIcon';
 
 
 
@@ -15,21 +19,61 @@ import DualPropertyInputWithIcon from './components/DualPropertyInputWithIcon';
 
 function App() {
 
+  const brownRef = useRef();
+  const cyanRef = useRef();
+  const purpleRef = useRef();
+  const orangeRef = useRef();
+  const redRef = useRef();
+  const yellowRef = useRef();
+  const greenRef = useRef();
+  const blueRef = useRef();
+  const railRef = useRef();
+
+  const scrollToBrown = () => {
+    brownRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
+  }
+  const scrollToCyan = () => {
+    cyanRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToPurple = () => {
+    purpleRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToOrange = () => {
+    orangeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToRed = () => {
+    redRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToYellow = () => {
+    yellowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToGreen = () => {
+    greenRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToBlue = () => {
+    blueRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToRail = () => {
+    railRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+
+
   const [master, setMaster] = useState(
     {
       title: 'Printopoly',
-      currency: 'fa-solid fa-sterling-sign',
+      currency: 'FaDollarSign',
 
-      railicon: 'fa-solid fa-train fa-5x',
-      chesticon: 'fa-solid fa-gift fa-5x',
-      chanceicon: 'fa-solid fa-circle-question fa-5x',
-      util1icon: 'fa-solid fa-lightbulb fa-5x',
-      util2icon: 'fa-solid fa-shower fa-5x',
-      gojailicon: 'fa-solid fa-handcuffs fa-5x',
-      parkingicon: 'fa-solid fa-car-side fa-5x',
-      jailicon: 'fa-solid fa-face-dizzy fa-5x',
-      tax1icon: 'fa-solid fa-money-bill-wave-alt fa-5x',
-      tax2icon: 'fa-solid fa-money-bill-wave-alt fa-5x',
+      railicon: 'FaTrain',
+      chesticon: 'FaBoxOpen',
+      chanceicon: 'FaDice',
+      util1icon: 'FaBriefcase',
+      util2icon: 'FaShoppingCart',
+      gojailicon: 'FaGavel',
+      parkingicon: 'FaParking',
+      jailicon: 'FaRegFrown',
+      tax1icon: 'FaMoneyBillAlt',
+      tax2icon: 'FaMoneyBillAlt',
 
       brown1: "brown1",
       brown2: "brown2",
@@ -92,20 +136,6 @@ function App() {
     console.log(response);
   }
 
-  const icons = [
-    "&#xf2bb;",
-  ]
-
-  const [value, setValue] = useState("FaBeer")
-
-  const printValue = () => {
-    console.log(value);
-    console.log(toKebabCase(value));
-  }
-
-  function toKebabCase(str) {
-    return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-  }
 
 
   return (
@@ -121,24 +151,105 @@ function App() {
             name="title"
           />
         </div>
-        
-        <h1>Transportation</h1>
 
+        <h1>Currency</h1>
+        <div>
+          <label> Currency: </label>
+          <div className='center'>
+            <IconPicker
+              value={master.currency}
+              onChange={(v) => setMaster({ ...master, currency: v })}
+            />
+          </div>
+        </div>
+
+
+        <h1>Properties</h1>
+        <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster} scroll={scrollToBrown}></DualPropertyInput>
+        <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster} scroll={scrollToCyan}></TriplePropertyInput>
+        <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster} scroll={scrollToPurple}></TriplePropertyInput>
+        <TriplePropertyInput number={4} incolor={"orange"} master={master} setMaster={setMaster} scroll={scrollToOrange}></TriplePropertyInput>
+        <TriplePropertyInput number={5} incolor={"red"} master={master} setMaster={setMaster} scroll={scrollToRed}></TriplePropertyInput>
+        <TriplePropertyInput number={6} incolor={"yellow"} master={master} setMaster={setMaster} scroll={scrollToYellow}></TriplePropertyInput>
+        <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster} scroll={scrollToGreen}></TriplePropertyInput>
+        <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster} scroll={scrollToBlue}></DualPropertyInput>
+
+
+        <h1>Specials</h1>
+        <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
+
+        <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
+        <h2>Go to Jail Icon</h2>
+        <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} ></IconChooser>
+
+
+
+        <QuadPropertyInputWithIcon title={"Transportation"} incolor={"rail"} master={master} setMaster={setMaster} scroll={scrollToRail}></QuadPropertyInputWithIcon>
+        <h2>Cards</h2>
+        <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
+        <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
         <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster}></DualPropertyInputWithIcon>
-        
-        <h1>Properties</h1>   
-        <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster}></DualPropertyInput>
-        <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <TriplePropertyInput number={4} incolor={"orange"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <TriplePropertyInput number={5} incolor={"red"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <TriplePropertyInput number={6} incolor={"yellow"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster}></TriplePropertyInput>
-        <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster}></DualPropertyInput>
+
 
         <button onClick={postData}>Post</button>
       </div>
       <div className='right'>
+
+        <h1 className="title">{master.title}</h1>
+
+        <div className='exprow' ref={brownRef}>
+          <TilePreview name={master.brown1} color={master.browncolor} currency={master.currency} price={'100'}></TilePreview>
+          <TilePreview name={master.brown2} color={master.browncolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={cyanRef}>
+          <TilePreview name={master.cyan1} color={master.cyancolor} currency={master.currency} price={'100'}></TilePreview>
+          <TilePreview name={master.cyan2} color={master.cyancolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.cyan3} color={master.cyancolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={purpleRef}>
+          <TilePreview name={master.purple1} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.purple2} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.purple3} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={orangeRef}>
+          <TilePreview name={master.orange1} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.orange2} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.orange3} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={redRef}>
+          <TilePreview name={master.red1} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.red2} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.red3} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={yellowRef}>
+          <TilePreview name={master.yellow1} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.yellow2} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.yellow3} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={greenRef}>
+          <TilePreview name={master.green1} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.green2} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.green3} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+        <div className='exprow' ref={blueRef}>
+          <TilePreview name={master.blue1} color={master.bluecolor} currency={master.currency} price={'200'}></TilePreview>
+          <TilePreview name={master.blue2} color={master.bluecolor} currency={master.currency} price={'200'}></TilePreview>
+        </div>
+
+        <div className='exprow' ref={railRef}>
+          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
+          <TilePreviewWithIcon name={master.rail1} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          </div>
+          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
+          <TilePreviewWithIcon name={master.rail2} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          </div>
+          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
+          <TilePreviewWithIcon name={master.rail3} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          </div>
+          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
+          <TilePreviewWithIcon name={master.rail4} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          </div>
+        </div>
         <pre>{JSON.stringify(master, null, 2)}</pre>
       </div>
 
