@@ -26,6 +26,7 @@ const DualPropertyInputWithIcon = (props) => {
                     value={props.master[property1]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
+                    onFocus={e => props.scroll ? props.scroll(): console.log("no scroll")}
                     name={property1}
                 />
             </div>
@@ -37,6 +38,7 @@ const DualPropertyInputWithIcon = (props) => {
                     value={props.master[property2]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}
+                    onFocus={e => props.scroll ? props.scroll(): console.log("no scroll")}
                     name={property2}
                 />
             </div>

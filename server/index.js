@@ -19,12 +19,17 @@ app.listen(process.env.PORT || 5000)
 app.get('/hello', (req, res) => {
     console.log("hello");
     doHTML()
-    res.status(200).json({ message: 'waotd' })
+    res.status(200).json({ message: 'hello' })
 })
+
+app.get('/test', (req, res) => {
+    res.status(200).json({ message: 'test' })
+})
+
 
 app.get('/card', (req, res) => {
     console.log("card");
-    doHTML()
+    doCardsWithArgs()
     res.status(200).json({ message: 'waotd' })
 })
 
@@ -52,20 +57,21 @@ function getCardPrompts(){
 }
 
 async function doHTML(){
-    // const path = "resources\\index.html"
-    // const html = await getHtmlFromFileOnDisk(path)
-    // await createImageFromHtml(html)
+    const path = "resources\\index.html"
+    const html = await getHtmlFromFileOnDisk(path)
+    await createImageFromHtml(html)
 
-    const cardpath = "resources\\card.html"
-    const cardhtml = await getHtmlFromFileOnDisk(cardpath)
-    const cardPrompts = getCardPrompts()
-    await createCardFromHtml(cardhtml,cardPrompts)
+    // const cardpath = "resources/card.html"
+    // const cardhtml = await getHtmlFromFileOnDisk(cardpath)
+    // const cardPrompts = getCardPrompts()
+    // await createCardFromHtml(cardhtml,cardPrompts)
 
 }
 
 async function doHTMLWithArgs(args){
-    const path = "resources\\index.html"
+    const path = "resources/index.html"
     const html = await getHtmlFromFileOnDisk(path)
+    convertImages(args)
     await createImageFromHtmlWithArgs(html,args)
 
     // const cardpath = "resources\\card.html"
@@ -74,6 +80,20 @@ async function doHTMLWithArgs(args){
     // await createCardFromHtml(cardhtml,cardPrompts)
 
 }
+
+async function doCardsWithArgs(args){
+    // const path = "resources/index.html"
+    // const html = await getHtmlFromFileOnDisk(path)
+    // convertImages(args)
+    // await createImageFromHtmlWithArgs(html,args)
+
+    const cardpath = "resources\\card.html"
+    const cardhtml = await getHtmlFromFileOnDisk(cardpath)
+    const cardPrompts = getCardPrompts()
+    await createCardFromHtml(cardhtml,cardPrompts)
+
+}
+
 
 //get htmlfrom file on disk
 async function getHtmlFromFileOnDisk(filepath) {
@@ -103,6 +123,45 @@ async function createImageFromHtmlWithArgs(htmlin, contentin) {
     return image;
 }
 
+function loadIconJson () {
+    let rawdata =  fs.readFileSync('resources/iconData.json');
+    let iconData = JSON.parse(rawdata);
+    console.log(iconData.faregtimescircle);
+    return  iconData;
+}
+
+function convertImages(argsin){
+    console.log(argsin)
+    let data = loadIconJson()
+    console.log(data.favihara);
+
+
+    argsin.currency = getImage(argsin.currency, data)
+    argsin.railicon = getImage(argsin.railicon, data) + " fa-5x"
+    argsin.chesticon = getImage(argsin.chesticon, data) + " fa-5x"
+    argsin.chanceicon = getImage(argsin.chanceicon, data) + " fa-5x"
+    argsin.util1icon = getImage(argsin.util1icon, data) + " fa-5x"
+    argsin.util2icon = getImage(argsin.util2icon, data) + " fa-5x"
+    argsin.gojailicon = getImage(argsin.gojailicon, data) + " fa-5x"
+    argsin.parkingicon = getImage(argsin.parkingicon, data) + " fa-5x"
+    argsin.jailicon = getImage(argsin.jailicon, data) + " fa-5x"
+    argsin.tax1icon = getImage(argsin.tax1icon, data) + " fa-5x"
+    argsin.tax2icon = getImage(argsin.tax2icon, data) + " fa-5x"
+
+    console.log(argsin)
+
+
+}
+
+function getImage(name, data){
+    if(!name || !data){
+        return "fa-solid fa-face-dizzy fa-5x"
+    }
+    console.log(name.toLowerCase());
+    console.log(data[name.toLowerCase()])
+    return data[name.toLowerCase()];
+}
+
 //create image from html
 async function createImageFromHtml(htmlin) {
     const image = await nodeHtmlToImage({
@@ -110,9 +169,9 @@ async function createImageFromHtml(htmlin) {
         html: htmlin,
         content: { 
             title: 'Gangopoly',
-            currency: 'fa-solid fa-sterling-sign',
+            currency: 'fas fa-pound-sign',
 
-            railicon: 'fa-solid fa-train fa-5x',
+            railicon: 'fas fa-pound-sign fa-5x',
             chesticon: 'fa-solid fa-gift fa-5x',
             chanceicon: 'fa-solid fa-circle-question fa-5x',
             util1icon: 'fa-solid fa-lightbulb fa-5x',
@@ -208,3 +267,26 @@ async function createCardFromHtml(htmlin,cardPrompts) {
       })
     return image;
 }
+
+// const { join, extname, basename } = require('path');
+// const { readdirSync, renameSync } = require('fs');
+
+
+// function rename(pathToOldFolder, prefix, type, iconData){
+//     for (const oldFile of readdirSync(pathToOldFolder)) {
+//          const extension = extname(oldFile);
+//          const name = basename(oldFile, extension);
+//          const key = prefix + name.replace(/-/g, "");
+//          const valuepair = type + " fa-" + name;
+//          iconData[key] = valuepair;
+
+//          console.log( name)
+//         // const newFile =  "fa" + oldFile;
+//         // renameSync(join(pathToOldFolder, oldFile), join(pathToOldFolder, newFile));
+        
+//     }
+    
+// }
+
+
+

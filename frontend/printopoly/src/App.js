@@ -5,8 +5,6 @@ import TriplePropertyInput from './components/TriplePropertyInput';
 import axios from 'axios';
 import IconChooser from './components/IconChooser';
 import { IconPicker } from 'react-fa-icon-picker'
-import Icon from './components/Icon';
-import *  as IconPack from 'react-icons/fa';
 import DualPropertyInputWithIcon from './components/DualPropertyInputWithIcon';
 import SinglePropertyInputWithIcon from './components/SinglePropertyInputWithIcon';
 import QuadPropertyInputWithIcon from './components/QuadPropertyInputWithIcon';
@@ -28,6 +26,14 @@ function App() {
   const greenRef = useRef();
   const blueRef = useRef();
   const railRef = useRef();
+  const utilityRef = useRef();
+  const taxRef = useRef();
+  const chanceRef = useRef();
+  const chestRef = useRef();
+  const parkingRef = useRef();
+  const jailRef = useRef();
+  
+
 
   const scrollToBrown = () => {
     brownRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'start' });
@@ -56,6 +62,27 @@ function App() {
   const scrollToRail = () => {
     railRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
+  const scrollToUtility = () => {
+    utilityRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToTax = () => {
+    taxRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToChance = () => {
+    chanceRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToChest = () => {
+    chestRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToParking = () => {
+    parkingRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+  const scrollToJail = () => {
+    jailRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+
+  
 
 
 
@@ -132,7 +159,21 @@ function App() {
   );
 
   const postData = async () => {
-    const response = await axios.post('http://localhost:5000/create', { printopoly: master });
+    const response = await axios.post('http://localhost:5000/create', { printopoly: master }).catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+  
+    });
     console.log(response);
   }
 
@@ -174,21 +215,22 @@ function App() {
         <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster} scroll={scrollToGreen}></TriplePropertyInput>
         <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster} scroll={scrollToBlue}></DualPropertyInput>
 
-
         <h1>Specials</h1>
-        <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
-
-        <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
-        <h2>Go to Jail Icon</h2>
-        <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} ></IconChooser>
-
-
-
+        <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster} scroll={scrollToTax} ></DualPropertyInputWithIcon>
+        <DualPropertyInputWithIcon title={"Utility"} incolor={"util"} master={master} setMaster={setMaster} scroll={scrollToUtility}></DualPropertyInputWithIcon>
         <QuadPropertyInputWithIcon title={"Transportation"} incolor={"rail"} master={master} setMaster={setMaster} scroll={scrollToRail}></QuadPropertyInputWithIcon>
         <h2>Cards</h2>
-        <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
-        <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster}></SinglePropertyInputWithIcon>
-        <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster}></DualPropertyInputWithIcon>
+        <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster} scroll={scrollToChance}></SinglePropertyInputWithIcon>
+        <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster} scroll={scrollToChest}></SinglePropertyInputWithIcon>
+
+
+
+
+        <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster} scroll={scrollToJail}></SinglePropertyInputWithIcon>
+        <h2>Go to Jail Icon</h2>
+        <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} scroll={scrollToJail} ></IconChooser>
+
+        <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
 
 
         <button onClick={postData}>Post</button>
@@ -236,6 +278,16 @@ function App() {
           <TilePreview name={master.blue2} color={master.bluecolor} currency={master.currency} price={'200'}></TilePreview>
         </div>
 
+        <div className='exprow' ref={taxRef}>
+          <TilePreviewWithIcon name={master.tax1} icon={master.tax1icon} color={master.tax1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          <TilePreviewWithIcon name={master.tax2} icon={master.tax2icon} color={master.tax2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        </div>
+  
+        <div className='exprow' ref={utilityRef}>
+          <TilePreviewWithIcon name={master.util1} icon={master.util1icon} color={master.util1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+          <TilePreviewWithIcon name={master.util2} icon={master.util2icon} color={master.util2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        </div>
+
         <div className='exprow' ref={railRef}>
           <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
           <TilePreviewWithIcon name={master.rail1} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
@@ -250,6 +302,24 @@ function App() {
           <TilePreviewWithIcon name={master.rail4} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
           </div>
         </div>
+
+        <div className='exprow' ref={chanceRef}>
+          <div ref={chestRef}> 
+          <TilePreviewWithIcon name={master.chance} icon={master.chanceicon} color={master.chancecolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+          <TilePreviewWithIcon name={master.chest} icon={master.chesticon} color={master.chestcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+          </div>
+        </div>
+
+        <div className='exprow' ref={jailRef}>
+          <TilePreviewWithIcon name={master.jail} icon={master.jailicon} color={master.jailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+          <TilePreviewWithIcon name={"Go to " + master.jail} icon={master.gojailicon} color={master.gojailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+
+        </div>
+
+        <div className='exprow' ref={parkingRef}>
+          <TilePreviewWithIcon name={"Free " + master.parking} icon={master.parkingicon} color={master.parkingcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+        </div>
+
         <pre>{JSON.stringify(master, null, 2)}</pre>
       </div>
 

@@ -32,6 +32,8 @@
   height: 300px;
   width: 200px;
   border: black solid 2px;
+  box-shadow: 10px 10px 10px #000000;
+
 }
 .property .color-bar {
   height: 75px;
@@ -46,6 +48,7 @@
 .holder{
   text-align: center;
   padding: 10px;
+  
 }
 
 .railroad .name {

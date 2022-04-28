@@ -6,17 +6,18 @@ import './TilePreview.css'
 const TilePreviewWithIcon = (props) => {
     return (
         <div className='holder'>
-			<div className="space railroad">
-				<div className="container">
-					<div className="name">{props.name}</div>
+            <div className="space railroad">
+                <div className="container">
+                    <div className="name">{props.name}</div>
                     <Icon iconName={props.icon} size={110} color={props.color} />
-                    <div className="price">Price                           
-                    <Icon iconName={props.currency} size={20} color={'black'} />
-                    {props.price}</div>
-                    </div>
-			</div>
+                        { (props.price && props.price.trim !== '') ? <div className="price">
+                            <Icon iconName={props.currency} size={20} color={'black'} />
+                            {props.price}
+                        </div> : <div></div> }
+                </div>
+            </div>
         </div>
-        
+
     )
 }
 

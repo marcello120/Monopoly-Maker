@@ -39,12 +39,12 @@ const IconChooser = (props) => {
                             name={props.iconColor}
                             value={props.master[props.iconColor]}
                             onChange={e => props.setMaster({ ...props.master, [props.iconColor]: e.target.value })}
-                            onFocus={e => props.scroll()}
+                            onFocus={e =>  props.scroll ? props.scroll(): console.log("no scroll")}
                         />                        
                         <IconPicker
                             value={props.master[props.iconName]}
                             onChange={(v) => props.setMaster({ ...props.master, [props.iconName]: v })}
-                            onFocus={e => props.scroll()}
+                            onClick={e => props.scroll ? props.scroll(): console.log("no scroll")}
                         />
                     </div>
                     <span style={{ padding: 10 }}>
