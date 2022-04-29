@@ -29,13 +29,15 @@ app.get('/test', (req, res) => {
 
 app.get('/card', (req, res) => {
     console.log("card");
-    doCardsWithArgs()
+    // doCardsWithArgs()
+    createCards(req.body.printopoly)
     res.status(200).json({ message: 'waotd' })
 })
 
 app.post('/create', (req, res) => {
     console.log(req.body);
     doHTMLWithArgs(req.body.printopoly)
+    createCards(req.body.printopoly)
     res.status(200).json({ message: req.body.printopoly })
 })
 
@@ -94,6 +96,44 @@ async function doCardsWithArgs(args){
 
 }
 
+async function createCards(master){
+    cardData = loadCardJson();
+    const cardpath = "resources\\card.html"
+    const cardhtml = await getHtmlFromFileOnDisk(cardpath);
+    console.log(cardData);
+    //borwn
+    await createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor)
+    await createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor)
+    //cyan
+    await createCardFromHtml(cardhtml,cardData.cyan1,master.cyan1,master.cyancolor)
+    await createCardFromHtml(cardhtml,cardData.cyan2,master.cyan2,master.cyancolor)
+    await createCardFromHtml(cardhtml,cardData.cyan3,master.cyan3,master.cyancolor)
+    //pink
+    await createCardFromHtml(cardhtml,cardData.purple1,master.purple1,master.purplecolor)
+    await createCardFromHtml(cardhtml,cardData.purple2,master.purple2,master.purplecolor)
+    await createCardFromHtml(cardhtml,cardData.purple3,master.purple3,master.purplecolor)
+    //orange
+    await createCardFromHtml(cardhtml,cardData.orange1,master.orange1,master.orangecolor)
+    await createCardFromHtml(cardhtml,cardData.orange2,master.orange2,master.orangecolor)
+    await createCardFromHtml(cardhtml,cardData.orange3,master.orange3,master.orangecolor)
+    //red
+    await createCardFromHtml(cardhtml,cardData.red1,master.red1,master.redcolor)
+    await createCardFromHtml(cardhtml,cardData.red2,master.red2,master.redcolor)
+    await createCardFromHtml(cardhtml,cardData.red3,master.red3,master.redcolor)
+    //yellow
+    await createCardFromHtml(cardhtml,cardData.yellow1,master.yellow1,master.yellowcolor)
+    await createCardFromHtml(cardhtml,cardData.yellow2,master.yellow2,master.yellowcolor)
+    await createCardFromHtml(cardhtml,cardData.yellow3,master.yellow3,master.yellowcolor)
+    //green
+    await createCardFromHtml(cardhtml,cardData.green1,master.green1,master.greencolor)
+    await createCardFromHtml(cardhtml,cardData.green2,master.green2,master.greencolor)
+    await createCardFromHtml(cardhtml,cardData.green3,master.green3,master.greencolor)
+    //blue
+    await createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor)
+    await createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor)
+
+}
+
 
 //get htmlfrom file on disk
 async function getHtmlFromFileOnDisk(filepath) {
@@ -126,15 +166,18 @@ async function createImageFromHtmlWithArgs(htmlin, contentin) {
 function loadIconJson () {
     let rawdata =  fs.readFileSync('resources/iconData.json');
     let iconData = JSON.parse(rawdata);
-    console.log(iconData.faregtimescircle);
     return  iconData;
 }
 
-function convertImages(argsin){
-    console.log(argsin)
-    let data = loadIconJson()
-    console.log(data.favihara);
+function loadCardJson(){
+    let rawdata =  fs.readFileSync('resources/cardData.json');
+    let cardData = JSON.parse(rawdata);
+    return  cardData;
+}
 
+
+function convertImages(argsin){
+    let data = loadIconJson()
 
     argsin.currency = getImage(argsin.currency, data)
     argsin.railicon = getImage(argsin.railicon, data) + " fa-5x"
@@ -244,22 +287,22 @@ async function createImageFromHtml(htmlin) {
 
 
 
-async function createCardFromHtml(htmlin,cardPrompts) {
+async function createCardFromHtml(htmlin,cardPrompts,name,color) {
     const image = await nodeHtmlToImage({
-        output: './card'+ getTimeInMiliseconds() +'.png' ,
+        output: './card' + name + getTimeInMiliseconds() +'.png' ,
         html: htmlin,
         content: { 
-            title: cardPrompts.title,
-            color: cardPrompts.color,
+            title: name,
+            color: color,
             rent0: cardPrompts.rent0,
-            rentSet: cardPrompts.rentSet,
             rent1: cardPrompts.rent1,
             rent2: cardPrompts.rent2,
             rent3: cardPrompts.rent3,
             rent4: cardPrompts.rent4,
             rentH: cardPrompts.rentH,
+            mortgage: cardPrompts.price/2,
             housecost: cardPrompts.housecost,
-            hotelcost: cardPrompts.hotelcost,
+            hotelcost: cardPrompts.housecost,
             currency: cardPrompts.currency,
         },
         // encoding: 'base64',
