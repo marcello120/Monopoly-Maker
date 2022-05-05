@@ -29,15 +29,15 @@ app.get('/test', (req, res) => {
 
 app.get('/card', (req, res) => {
     console.log("card");
-    // doCardsWithArgs()
-    createCards(req.body.printopoly)
+    doCardsWithArgs()
+    createCards(req.body.printopoly, req.body.cards)
     res.status(200).json({ message: 'waotd' })
 })
 
 app.post('/create', (req, res) => {
     console.log(req.body);
-    doHTMLWithArgs(req.body.printopoly)
-    createCards(req.body.printopoly)
+    doHTMLWithArgs(req.body.printopoly, req.body.cards)
+    createCards(req.body.printopoly, req.body.cards)
     res.status(200).json({ message: req.body.printopoly })
 })
 
@@ -70,17 +70,47 @@ async function doHTML(){
 
 }
 
-async function doHTMLWithArgs(args){
+async function doHTMLWithArgs(args, cards){
     const path = "resources/index.html"
     const html = await getHtmlFromFileOnDisk(path)
     convertImages(args)
+    addPrice(args,cards)
+    console.log(args)
+
     await createImageFromHtmlWithArgs(html,args)
+}
 
-    // const cardpath = "resources\\card.html"
-    // const cardhtml = await getHtmlFromFileOnDisk(cardpath)
-    // const cardPrompts = getCardPrompts()
-    // await createCardFromHtml(cardhtml,cardPrompts)
-
+function addPrice(argsin, cardsin){
+    //brown
+    argsin.brown1price = cardsin.brown1.price
+    argsin.brown2price = cardsin.brown2.price
+    //cyan
+    argsin.cyan1price = cardsin.cyan1.price
+    argsin.cyan2price = cardsin.cyan2.price
+    argsin.cyan3price = cardsin.cyan3.price
+    //purple
+    argsin.purple1price = cardsin.purple1.price
+    argsin.purple2price = cardsin.purple2.price
+    argsin.purple3price = cardsin.purple3.price
+    //orange
+    argsin.orange1price = cardsin.orange1.price
+    argsin.orange2price = cardsin.orange2.price
+    argsin.orange3price = cardsin.orange3.price
+    //red
+    argsin.red1price = cardsin.red1.price
+    argsin.red2price = cardsin.red2.price
+    argsin.red3price = cardsin.red3.price
+    //yellow
+    argsin.yellow1price = cardsin.yellow1.price
+    argsin.yellow2price = cardsin.yellow2.price
+    argsin.yellow3price = cardsin.yellow3.price
+    //green
+    argsin.green1price = cardsin.green1.price
+    argsin.green2price = cardsin.green2.price
+    argsin.green3price = cardsin.green3.price
+    //blue
+    argsin.blue1price = cardsin.blue1.price
+    argsin.blue2price = cardsin.blue2.price
 }
 
 async function doCardsWithArgs(args){
@@ -96,11 +126,10 @@ async function doCardsWithArgs(args){
 
 }
 
-async function createCards(master){
-    cardData = loadCardJson();
-    const cardpath = "resources\\card.html"
-    const cardhtml = await getHtmlFromFileOnDisk(cardpath);
-    console.log(cardData);
+async function createCards(master,cardData){
+    // cardData = loadCardJson();
+     const cardpath = "resources\\card.html"
+     const cardhtml = await getHtmlFromFileOnDisk(cardpath);
     //borwn
     await createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor)
     await createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor)
@@ -131,6 +160,21 @@ async function createCards(master){
     //blue
     await createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor)
     await createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor)
+
+    //rail
+    const railpath = "resources\\cardRail.html"
+    const railhtml = await getHtmlFromFileOnDisk(railpath);
+
+    await createCardFromHtml(railhtml,cardData.rail,master.rail1,master.railcolor,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail2,master.railcolor,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail3,master.railcolor,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail4,master.railcolor,master.railicon)
+
+    //util
+    const utilpath = "resources\\cardUtil.html"
+    const utilhtml = await getHtmlFromFileOnDisk(utilpath);
+    await createCardFromHtml(utilhtml,cardData.util,master.util1,master.util1color,master.util1icon)
+    await createCardFromHtml(utilhtml,cardData.util,master.util2,master.util2color,master.util2icon)
 
 }
 
@@ -287,7 +331,7 @@ async function createImageFromHtml(htmlin) {
 
 
 
-async function createCardFromHtml(htmlin,cardPrompts,name,color) {
+async function createCardFromHtml(htmlin,cardPrompts,name,color, icon="") {
     const image = await nodeHtmlToImage({
         output: './card' + name + getTimeInMiliseconds() +'.png' ,
         html: htmlin,
@@ -303,6 +347,7 @@ async function createCardFromHtml(htmlin,cardPrompts,name,color) {
             mortgage: cardPrompts.price/2,
             housecost: cardPrompts.housecost,
             hotelcost: cardPrompts.housecost,
+            icon: icon,
             currency: cardPrompts.currency,
         },
         // encoding: 'base64',

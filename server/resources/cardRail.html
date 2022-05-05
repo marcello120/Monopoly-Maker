@@ -59,30 +59,33 @@ body {
   padding: 5px;
   text-align: center;
 }
+
+.ifIhaveToCenterAnotherDivIWillStartCommitingPublicIndecencies{
+  margin: auto;
+width: 60%;
+padding: 10px;
+text-align: center;
+}
+
+
 .monopoly-card_title {
   position: absolute;
   top: 25px;
   left: 25px;
   right: 25px;
   height: 70px;
-  border: solid 2px #000;
   text-align: center;
   font-weight: 900;
   font-size: 20px;
-  padding: 33px 0;
+  padding: 18px 0;
 }
 .monopoly-card_title:before {
   display: block;
   position: absolute;
-  content: " ";
-  content: "TITLE DEED";
-  top: 8px;
   width: 100%;
   font-size: 15px;
 }
-.monopoly-card_title {
-  background: {{color}};
-}
+
 .monopoly-card_content {
   position: absolute;
   padding: 3px;
@@ -104,7 +107,7 @@ body {
   position: absolute;
   padding: 10px 3px 3px 3px;
   right: 25px;
-  top: 300px;
+  top: 210px;
   left: 25px;
   border-top: solid 1px #000;
 }
@@ -132,9 +135,12 @@ body {
    <div class="monopoly-card_title">
       {{title}}
    </div>
-   <div class="monopoly-card_content">
-      <div class="description">Rent</div>
-      <div class="monopoly-money"><i class="{{currency}}"></i> {{rent0}}</div>
+    <div class="monopoly-card_content">
+      <div class="ifIhaveToCenterAnotherDivIWillStartCommitingPublicIndecencies">       <i style="color: {{color}}" class="{{icon}}"></i></div>
+
+    </div>
+   <div class="monopoly-card_footer">
+
       <div class="description">Rent 1</div>
       <div class="monopoly-money"><i class="{{currency}}"></i>{{rent1}}</div>  
       <div class="description">Rent 2</div>
@@ -143,18 +149,10 @@ body {
       <div class="monopoly-money"><i class="{{currency}}"></i>{{rent3}}</div>  
       <div class="description">Rent 4</div>
       <div class="monopoly-money"><i class="{{currency}}"></i>{{rent4}}</div>  
-      <div class="description">Rent Hotel</div>
-      <div class="monopoly-money"><i class="{{currency}}"></i>{{rentH}}</div> 
       <div style="font-weight: bold;" class="description">Mortgage </div>
       <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{mortgage}}</div>         
    </div>
-
-   <div class="monopoly-card_footer">
-      <div class="description">Houses cost</div>
-      <div class="monopoly-money"><i class="{{currency}}"></i>{{housecost}}</div>
-      <div class="description">Hotels cost</div>
-      <div class="monopoly-money"><i class="{{currency}}"></i>{{hotelcost}}</div>  
-   </div>  
+ 
 </div>
 <!-- partial -->
   

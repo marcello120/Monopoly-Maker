@@ -32,7 +32,7 @@ function App() {
   const chestRef = useRef();
   const parkingRef = useRef();
   const jailRef = useRef();
-  
+
 
 
   const scrollToBrown = () => {
@@ -80,10 +80,6 @@ function App() {
   const scrollToJail = () => {
     jailRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
-
-
-  
-
 
 
   const [master, setMaster] = useState(
@@ -158,173 +154,436 @@ function App() {
     }
   );
 
-  const postData = async () => {
-    const response = await axios.post('http://localhost:5000/create', { printopoly: master }).catch(function (error) {
-      if (error.response) {
-        // Request made and server responded
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-  
-    });
-    console.log(response);
+  const cardMaster = {
+    brown1: {
+      title: "borwn1",
+      color: "red",
+      price: "60",
+      rent0: "2",
+      rent1: "10",
+      rent2: "30",
+      rent3: "90",
+      rent4: "160",
+      rentH: "250",
+      housecost: "50"
+    },
+    brown2: {
+      title: "borwn2",
+      color: "red",
+      price: "60",
+      rent0: "4",
+      rent1: "20",
+      rent2: "60",
+      rent3: "180",
+      rent4: "320",
+      rentH: "450",
+      housecost: "50"
+    },
+    cyan1: {
+      title: "cyan1",
+      color: "blue",
+      price: "100",
+      rent0: "6",
+      rent1: "30",
+      rent2: "90",
+      rent3: "270",
+      rent4: "400",
+      rentH: "550",
+      housecost: "50"
+    },
+    cyan2: {
+      title: "cyan2",
+      color: "blue",
+      price: "100",
+      rent0: "6",
+      rent1: "30",
+      rent2: "90",
+      rent3: "270",
+      rent4: "400",
+      rentH: "550",
+      housecost: "50"
+    },
+    cyan3: {
+      title: "cyan3",
+      color: "blue",
+      price: "120",
+      rent0: "8",
+      rent1: "40",
+      rent2: "100",
+      rent3: "300",
+      rent4: "450",
+      rentH: "600",
+      housecost: "50"
+    },
+    purple1: {
+      title: "pink1",
+      color: "pink",
+      price: "140",
+      rent0: "10",
+      rent1: "50",
+      rent2: "150",
+      rent3: "450",
+      rent4: "625",
+      rentH: "750",
+      housecost: "100"
+    },
+    purple2: {
+      title: "pink2",
+      color: "pink",
+      price: "140",
+      rent0: "10",
+      rent1: "50",
+      rent2: "150",
+      rent3: "450",
+      rent4: "625",
+      rentH: "750",
+      housecost: "100"
+    },
+    purple3: {
+      title: "pink3",
+      color: "pink",
+      price: "160",
+      rent0: "12",
+      rent1: "60",
+      rent2: "180",
+      rent3: "500",
+      rent4: "700",
+      rentH: "900",
+      housecost: "100"
+    },
+    orange1: {
+      title: "orange1",
+      color: "orange",
+      price: "180",
+      rent0: "14",
+      rent1: "70",
+      rent2: "200",
+      rent3: "550",
+      rent4: "750",
+      rentH: "950",
+      housecost: "150"
+    },
+    orange2: {
+      title: "orange2",
+      color: "orange",
+      price: "180",
+      rent0: "14",
+      rent1: "70",
+      rent2: "200",
+      rent3: "550",
+      rent4: "750",
+      rentH: "950",
+      housecost: "150"
+    },
+    orange3: {
+      title: "orange3",
+      color: "orange",
+      price: "200",
+      rent0: "16",
+      rent1: "80",
+      rent2: "220",
+      rent3: "600",
+      rent4: "800",
+      rentH: "1000",
+      housecost: "150"
+    },
+    red1: {
+      title: "red1",
+      color: "red",
+      price: "220",
+      rent0: "18",
+      rent1: "90",
+      rent2: "250",
+      rent3: "700",
+      rent4: "875",
+      rentH: "1050",
+      housecost: "150"
+    },
+    red2: {
+      price: "220",
+      rent0: "18",
+      rent1: "90",
+      rent2: "250",
+      rent3: "700",
+      rent4: "875",
+      rentH: "1050",
+      housecost: "150"
+    },
+    red3: {
+      price: "240",
+      rent0: "20",
+      rent1: "100",
+      rent2: "300",
+      rent3: "750",
+      rent4: "925",
+      rentH: "1100",
+      housecost: "150"
+    },
+    yellow1: {
+      price: "260",
+      rent0: "22",
+      rent1: "110",
+      rent2: "330",
+      rent3: "800",
+      rent4: "975",
+      rentH: "1175",
+      housecost: "150"
+    },
+    yellow2: {
+      price: "260",
+      rent0: "22",
+      rent1: "110",
+      rent2: "330",
+      rent3: "800",
+      rent4: "975",
+      rentH: "1175",
+      housecost: "150"
+    },
+    yellow3: {
+      price: "280",
+      rent0: "24",
+      rent1: "120",
+      rent2: "360",
+      rent3: "850",
+      rent4: "1025",
+      rentH: "1200",
+      housecost: "150"
+    },
+    green1: {
+      price: "300",
+      rent0: "26",
+      rent1: "130",
+      rent2: "390",
+      rent3: "900",
+      rent4: "1100",
+      rentH: "1275",
+      housecost: "200"
+    },
+    green2: {
+      price: "300",
+      rent0: "26",
+      rent1: "130",
+      rent2: "390",
+      rent3: "900",
+      rent4: "1100",
+      rentH: "1275",
+      housecost: "200"
+    },
+    green3: {
+      price: "320",
+      rent0: "28",
+      rent1: "150",
+      rent2: "450",
+      rent3: "1000",
+      rent4: "1200",
+      rentH: "1400",
+      housecost: "200"
+    },
+    blue1: {
+      price: "350",
+      rent0: "35",
+      rent1: "175",
+      rent2: "500",
+      rent3: "1100",
+      rent4: "1300",
+      rentH: "1500",
+      housecost: "200"
+    },
+    blue2: {
+      price: "400",
+      rent0: "50",
+      rent1: "200",
+      rent2: "600",
+      rent3: "1400",
+      rent4: "1700",
+      rentH: "2000",
+      housecost: "200"
+    },
+    rail: {
+      title: "rail",
+      color: "black",
+      price: "200",
+      rent1: "25",
+      rent2: "50",
+      rent3: "100",
+      rent4: "200",
+    },
+    util: {
+      price: "150",
+      rent1: "4",
+      rent2: "10",
   }
+}
 
 
 
-  return (
-    <div className="App">
-      <div className='left'>
-        <h1>Title</h1>
-        <div>
-          <label> Title: </label>
-          <input
-            value={master.title}
-            type="text"
-            onChange={e => setMaster({ ...master, title: e.target.value })}
-            name="title"
+const postData = async () => {
+  const response = await axios.post('http://localhost:5000/create', { printopoly: master, cards: cardMaster }).catch(function (error) {
+    if (error.response) {
+      // Request made and server responded
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
+
+  });
+  console.log(response);
+}
+
+
+
+return (
+  <div className="App">
+    <div className='left'>
+      <h1>Title</h1>
+      <div>
+        <label> Title: </label>
+        <input
+          value={master.title}
+          type="text"
+          onChange={e => setMaster({ ...master, title: e.target.value })}
+          name="title"
+        />
+      </div>
+
+      <h1>Currency</h1>
+      <div>
+        <label> Currency: </label>
+        <div className='center'>
+          <IconPicker
+            value={master.currency}
+            onChange={(v) => setMaster({ ...master, currency: v })}
           />
         </div>
-
-        <h1>Currency</h1>
-        <div>
-          <label> Currency: </label>
-          <div className='center'>
-            <IconPicker
-              value={master.currency}
-              onChange={(v) => setMaster({ ...master, currency: v })}
-            />
-          </div>
-        </div>
-
-
-        <h1>Properties</h1>
-        <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster} scroll={scrollToBrown}></DualPropertyInput>
-        <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster} scroll={scrollToCyan}></TriplePropertyInput>
-        <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster} scroll={scrollToPurple}></TriplePropertyInput>
-        <TriplePropertyInput number={4} incolor={"orange"} master={master} setMaster={setMaster} scroll={scrollToOrange}></TriplePropertyInput>
-        <TriplePropertyInput number={5} incolor={"red"} master={master} setMaster={setMaster} scroll={scrollToRed}></TriplePropertyInput>
-        <TriplePropertyInput number={6} incolor={"yellow"} master={master} setMaster={setMaster} scroll={scrollToYellow}></TriplePropertyInput>
-        <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster} scroll={scrollToGreen}></TriplePropertyInput>
-        <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster} scroll={scrollToBlue}></DualPropertyInput>
-
-        <h1>Specials</h1>
-        <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster} scroll={scrollToTax} ></DualPropertyInputWithIcon>
-        <DualPropertyInputWithIcon title={"Utility"} incolor={"util"} master={master} setMaster={setMaster} scroll={scrollToUtility}></DualPropertyInputWithIcon>
-        <QuadPropertyInputWithIcon title={"Transportation"} incolor={"rail"} master={master} setMaster={setMaster} scroll={scrollToRail}></QuadPropertyInputWithIcon>
-        <h2>Cards</h2>
-        <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster} scroll={scrollToChance}></SinglePropertyInputWithIcon>
-        <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster} scroll={scrollToChest}></SinglePropertyInputWithIcon>
-
-
-
-
-        <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster} scroll={scrollToJail}></SinglePropertyInputWithIcon>
-        <h2>Go to Jail Icon</h2>
-        <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} scroll={scrollToJail} ></IconChooser>
-
-        <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
-
-
-        <button onClick={postData}>Post</button>
       </div>
-      <div className='right'>
 
-        <h1 className="title">{master.title}</h1>
 
-        <div className='exprow' ref={brownRef}>
-          <TilePreview name={master.brown1} color={master.browncolor} currency={master.currency} price={'100'}></TilePreview>
-          <TilePreview name={master.brown2} color={master.browncolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={cyanRef}>
-          <TilePreview name={master.cyan1} color={master.cyancolor} currency={master.currency} price={'100'}></TilePreview>
-          <TilePreview name={master.cyan2} color={master.cyancolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.cyan3} color={master.cyancolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={purpleRef}>
-          <TilePreview name={master.purple1} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.purple2} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.purple3} color={master.purplecolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={orangeRef}>
-          <TilePreview name={master.orange1} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.orange2} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.orange3} color={master.orangecolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={redRef}>
-          <TilePreview name={master.red1} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.red2} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.red3} color={master.redcolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={yellowRef}>
-          <TilePreview name={master.yellow1} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.yellow2} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.yellow3} color={master.yellowcolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={greenRef}>
-          <TilePreview name={master.green1} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.green2} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.green3} color={master.greencolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
-        <div className='exprow' ref={blueRef}>
-          <TilePreview name={master.blue1} color={master.bluecolor} currency={master.currency} price={'200'}></TilePreview>
-          <TilePreview name={master.blue2} color={master.bluecolor} currency={master.currency} price={'200'}></TilePreview>
-        </div>
+      <h1>Properties</h1>
+      <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster} scroll={scrollToBrown}></DualPropertyInput>
+      <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster} scroll={scrollToCyan}></TriplePropertyInput>
+      <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster} scroll={scrollToPurple}></TriplePropertyInput>
+      <TriplePropertyInput number={4} incolor={"orange"} master={master} setMaster={setMaster} scroll={scrollToOrange}></TriplePropertyInput>
+      <TriplePropertyInput number={5} incolor={"red"} master={master} setMaster={setMaster} scroll={scrollToRed}></TriplePropertyInput>
+      <TriplePropertyInput number={6} incolor={"yellow"} master={master} setMaster={setMaster} scroll={scrollToYellow}></TriplePropertyInput>
+      <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster} scroll={scrollToGreen}></TriplePropertyInput>
+      <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster} scroll={scrollToBlue}></DualPropertyInput>
 
-        <div className='exprow' ref={taxRef}>
-          <TilePreviewWithIcon name={master.tax1} icon={master.tax1icon} color={master.tax1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          <TilePreviewWithIcon name={master.tax2} icon={master.tax2icon} color={master.tax2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-        </div>
-  
-        <div className='exprow' ref={utilityRef}>
-          <TilePreviewWithIcon name={master.util1} icon={master.util1icon} color={master.util1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          <TilePreviewWithIcon name={master.util2} icon={master.util2icon} color={master.util2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-        </div>
+      <h1>Specials</h1>
+      <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster} scroll={scrollToTax} ></DualPropertyInputWithIcon>
+      <DualPropertyInputWithIcon title={"Utility"} incolor={"util"} master={master} setMaster={setMaster} scroll={scrollToUtility}></DualPropertyInputWithIcon>
+      <QuadPropertyInputWithIcon title={"Transportation"} incolor={"rail"} master={master} setMaster={setMaster} scroll={scrollToRail}></QuadPropertyInputWithIcon>
+      <h2>Cards</h2>
+      <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster} scroll={scrollToChance}></SinglePropertyInputWithIcon>
+      <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster} scroll={scrollToChest}></SinglePropertyInputWithIcon>
 
-        <div className='exprow' ref={railRef}>
-          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
+
+
+
+      <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster} scroll={scrollToJail}></SinglePropertyInputWithIcon>
+      <h2>Go to Jail Icon</h2>
+      <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} scroll={scrollToJail} ></IconChooser>
+
+      <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
+
+
+      <button className='submitButton' onClick={postData}>Post</button>
+    </div>
+    <div className='right'>
+
+      <h1 className="title">{master.title}</h1>
+
+      <div className='exprow' ref={brownRef}>
+        <TilePreview name={master.brown1} color={master.browncolor} currency={master.currency} price={cardMaster.brown1.price}></TilePreview>
+        <TilePreview name={master.brown2} color={master.browncolor} currency={master.currency} price={cardMaster.brown2.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={cyanRef}>
+        <TilePreview name={master.cyan1} color={master.cyancolor} currency={master.currency} price={cardMaster.cyan1.price}></TilePreview>
+        <TilePreview name={master.cyan2} color={master.cyancolor} currency={master.currency} price={cardMaster.cyan2.price}></TilePreview>
+        <TilePreview name={master.cyan3} color={master.cyancolor} currency={master.currency} price={cardMaster.cyan3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={purpleRef}>
+        <TilePreview name={master.purple1} color={master.purplecolor} currency={master.currency} price={cardMaster.purple1.price}></TilePreview>
+        <TilePreview name={master.purple2} color={master.purplecolor} currency={master.currency} price={cardMaster.purple2.price}></TilePreview>
+        <TilePreview name={master.purple3} color={master.purplecolor} currency={master.currency} price={cardMaster.purple3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={orangeRef}>
+        <TilePreview name={master.orange1} color={master.orangecolor} currency={master.currency} price={cardMaster.orange1.price}></TilePreview>
+        <TilePreview name={master.orange2} color={master.orangecolor} currency={master.currency} price={cardMaster.orange2.price}></TilePreview>
+        <TilePreview name={master.orange3} color={master.orangecolor} currency={master.currency} price={cardMaster.orange3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={redRef}>
+        <TilePreview name={master.red1} color={master.redcolor} currency={master.currency} price={cardMaster.red1.price}></TilePreview>
+        <TilePreview name={master.red2} color={master.redcolor} currency={master.currency} price={cardMaster.red2.price}></TilePreview>
+        <TilePreview name={master.red3} color={master.redcolor} currency={master.currency} price={cardMaster.red3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={yellowRef}>
+        <TilePreview name={master.yellow1} color={master.yellowcolor} currency={master.currency} price={cardMaster.yellow1.price}></TilePreview>
+        <TilePreview name={master.yellow2} color={master.yellowcolor} currency={master.currency} price={cardMaster.yellow2.price}></TilePreview>
+        <TilePreview name={master.yellow3} color={master.yellowcolor} currency={master.currency} price={cardMaster.yellow3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={greenRef}>
+        <TilePreview name={master.green1} color={master.greencolor} currency={master.currency} price={cardMaster.green1.price}></TilePreview>
+        <TilePreview name={master.green2} color={master.greencolor} currency={master.currency} price={cardMaster.green2.price}></TilePreview>
+        <TilePreview name={master.green3} color={master.greencolor} currency={master.currency} price={cardMaster.green3.price}></TilePreview>
+      </div>
+      <div className='exprow' ref={blueRef}>
+        <TilePreview name={master.blue1} color={master.bluecolor} currency={master.currency} price={cardMaster.blue1.price}></TilePreview>
+        <TilePreview name={master.blue2} color={master.bluecolor} currency={master.currency} price={cardMaster.blue2.price}></TilePreview>
+      </div>
+
+      <div className='exprow' ref={taxRef}>
+        <TilePreviewWithIcon name={master.tax1} icon={master.tax1icon} color={master.tax1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        <TilePreviewWithIcon name={master.tax2} icon={master.tax2icon} color={master.tax2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+      </div>
+
+      <div className='exprow' ref={utilityRef}>
+        <TilePreviewWithIcon name={master.util1} icon={master.util1icon} color={master.util1color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        <TilePreviewWithIcon name={master.util2} icon={master.util2icon} color={master.util2color} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+      </div>
+
+      <div className='exprow' ref={railRef}>
+        <div style={{ flex: '0 0 50%', justifyContent: 'center' }}>
           <TilePreviewWithIcon name={master.rail1} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          </div>
-          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
-          <TilePreviewWithIcon name={master.rail2} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          </div>
-          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
-          <TilePreviewWithIcon name={master.rail3} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          </div>
-          <div style={{flex: '0 0 50%', justifyContent: 'center'}}>
-          <TilePreviewWithIcon name={master.rail4} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
-          </div>
         </div>
+        <div style={{ flex: '0 0 50%', justifyContent: 'center' }}>
+          <TilePreviewWithIcon name={master.rail2} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        </div>
+        <div style={{ flex: '0 0 50%', justifyContent: 'center' }}>
+          <TilePreviewWithIcon name={master.rail3} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        </div>
+        <div style={{ flex: '0 0 50%', justifyContent: 'center' }}>
+          <TilePreviewWithIcon name={master.rail4} icon={master.railicon} color={master.railcolor} currency={master.currency} price={'200'}></TilePreviewWithIcon>
+        </div>
+      </div>
 
-        <div className='exprow' ref={chanceRef}>
-          <div ref={chestRef}> 
+      <div className='exprow' ref={chanceRef}>
+        <div ref={chestRef}>
           <TilePreviewWithIcon name={master.chance} icon={master.chanceicon} color={master.chancecolor} currency={master.currency} price={''}></TilePreviewWithIcon>
           <TilePreviewWithIcon name={master.chest} icon={master.chesticon} color={master.chestcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
-          </div>
         </div>
-
-        <div className='exprow' ref={jailRef}>
-          <TilePreviewWithIcon name={master.jail} icon={master.jailicon} color={master.jailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
-          <TilePreviewWithIcon name={"Go to " + master.jail} icon={master.gojailicon} color={master.gojailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
-
-        </div>
-
-        <div className='exprow' ref={parkingRef}>
-          <TilePreviewWithIcon name={"Free " + master.parking} icon={master.parkingicon} color={master.parkingcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
-        </div>
-
-        <pre>{JSON.stringify(master, null, 2)}</pre>
       </div>
 
+      <div className='exprow' ref={jailRef}>
+        <TilePreviewWithIcon name={master.jail} icon={master.jailicon} color={master.jailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+        <TilePreviewWithIcon name={"Go to " + master.jail} icon={master.gojailicon} color={master.gojailcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+
+      </div>
+
+      <div className='exprow' ref={parkingRef}>
+        <TilePreviewWithIcon name={"Free " + master.parking} icon={master.parkingicon} color={master.parkingcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
+      </div>
+
+      <pre>{JSON.stringify(master, null, 2)}</pre>
     </div>
-  );
+
+  </div>
+);
 }
 
 export default App;
