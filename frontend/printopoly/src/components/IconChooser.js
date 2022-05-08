@@ -29,7 +29,7 @@ const IconChooser = (props) => {
 
     return (
         <div className='iconcontainer2'>
-            <label className='desc'> Icon </label>
+            <label className='desc'> Icon: </label>
             <input type="color"
                 className='iconcolorinput'
                 id={props.iconColor}

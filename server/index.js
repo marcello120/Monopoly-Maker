@@ -34,10 +34,15 @@ app.get('/card', (req, res) => {
     res.status(200).json({ message: 'waotd' })
 })
 
-app.post('/create', (req, res) => {
-    console.log(req.body);
-    doHTMLWithArgs(req.body.printopoly, req.body.cards)
-    createCards(req.body.printopoly, req.body.cards)
+app.post('/create', async (req, res) => {
+    // console.log(req.body);
+    const uniqueId = getTimeInMiliseconds() + "_" + getRandomNumber()
+    const dir = './out/' + uniqueId
+    console.log("Create dir " + dir)
+    fs.mkdirSync(dir);
+
+    doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
+    createCards(req.body.printopoly, req.body.cards,dir)
     res.status(200).json({ message: req.body.printopoly })
 })
 
@@ -70,14 +75,14 @@ async function doHTML(){
 
 }
 
-async function doHTMLWithArgs(args, cards){
+async function doHTMLWithArgs(args, cards,dir) {
     const path = "resources/index.html"
     const html = await getHtmlFromFileOnDisk(path)
     convertImages(args)
     addPrice(args,cards)
     console.log(args)
 
-    await createImageFromHtmlWithArgs(html,args)
+   return await createImageFromHtmlWithArgs(html,args,dir)
 }
 
 function addPrice(argsin, cardsin){
@@ -126,55 +131,55 @@ async function doCardsWithArgs(args){
 
 }
 
-async function createCards(master,cardData){
+async function createCards(master,cardData,dir){
     // cardData = loadCardJson();
      const cardpath = "resources\\card.html"
      const cardhtml = await getHtmlFromFileOnDisk(cardpath);
     //borwn
-    await createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor)
-    await createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor)
+    await createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor,dir)
+    await createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor,dir)
     //cyan
-    await createCardFromHtml(cardhtml,cardData.cyan1,master.cyan1,master.cyancolor)
-    await createCardFromHtml(cardhtml,cardData.cyan2,master.cyan2,master.cyancolor)
-    await createCardFromHtml(cardhtml,cardData.cyan3,master.cyan3,master.cyancolor)
+    await createCardFromHtml(cardhtml,cardData.cyan1,master.cyan1,master.cyancolor,dir)
+    await createCardFromHtml(cardhtml,cardData.cyan2,master.cyan2,master.cyancolor,dir)
+    await createCardFromHtml(cardhtml,cardData.cyan3,master.cyan3,master.cyancolor,dir)
     //pink
-    await createCardFromHtml(cardhtml,cardData.purple1,master.purple1,master.purplecolor)
-    await createCardFromHtml(cardhtml,cardData.purple2,master.purple2,master.purplecolor)
-    await createCardFromHtml(cardhtml,cardData.purple3,master.purple3,master.purplecolor)
+    await createCardFromHtml(cardhtml,cardData.purple1,master.purple1,master.purplecolor,dir)
+    await createCardFromHtml(cardhtml,cardData.purple2,master.purple2,master.purplecolor,dir)
+    await createCardFromHtml(cardhtml,cardData.purple3,master.purple3,master.purplecolor,dir)
     //orange
-    await createCardFromHtml(cardhtml,cardData.orange1,master.orange1,master.orangecolor)
-    await createCardFromHtml(cardhtml,cardData.orange2,master.orange2,master.orangecolor)
-    await createCardFromHtml(cardhtml,cardData.orange3,master.orange3,master.orangecolor)
+    await createCardFromHtml(cardhtml,cardData.orange1,master.orange1,master.orangecolor,dir)
+    await createCardFromHtml(cardhtml,cardData.orange2,master.orange2,master.orangecolor,dir)
+    await createCardFromHtml(cardhtml,cardData.orange3,master.orange3,master.orangecolor,dir)
     //red
-    await createCardFromHtml(cardhtml,cardData.red1,master.red1,master.redcolor)
-    await createCardFromHtml(cardhtml,cardData.red2,master.red2,master.redcolor)
-    await createCardFromHtml(cardhtml,cardData.red3,master.red3,master.redcolor)
+    await createCardFromHtml(cardhtml,cardData.red1,master.red1,master.redcolor,dir)
+    await createCardFromHtml(cardhtml,cardData.red2,master.red2,master.redcolor,dir)
+    await createCardFromHtml(cardhtml,cardData.red3,master.red3,master.redcolor,dir)
     //yellow
-    await createCardFromHtml(cardhtml,cardData.yellow1,master.yellow1,master.yellowcolor)
-    await createCardFromHtml(cardhtml,cardData.yellow2,master.yellow2,master.yellowcolor)
-    await createCardFromHtml(cardhtml,cardData.yellow3,master.yellow3,master.yellowcolor)
+    await createCardFromHtml(cardhtml,cardData.yellow1,master.yellow1,master.yellowcolor,dir)
+    await createCardFromHtml(cardhtml,cardData.yellow2,master.yellow2,master.yellowcolor,dir)
+    await createCardFromHtml(cardhtml,cardData.yellow3,master.yellow3,master.yellowcolor,dir)
     //green
-    await createCardFromHtml(cardhtml,cardData.green1,master.green1,master.greencolor)
-    await createCardFromHtml(cardhtml,cardData.green2,master.green2,master.greencolor)
-    await createCardFromHtml(cardhtml,cardData.green3,master.green3,master.greencolor)
+    await createCardFromHtml(cardhtml,cardData.green1,master.green1,master.greencolor,dir)
+    await createCardFromHtml(cardhtml,cardData.green2,master.green2,master.greencolor,dir)
+    await createCardFromHtml(cardhtml,cardData.green3,master.green3,master.greencolor,dir)
     //blue
-    await createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor)
-    await createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor)
+    await createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor,dir)
+    await createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor,dir)
 
     //rail
     const railpath = "resources\\cardRail.html"
     const railhtml = await getHtmlFromFileOnDisk(railpath);
 
-    await createCardFromHtml(railhtml,cardData.rail,master.rail1,master.railcolor,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail2,master.railcolor,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail3,master.railcolor,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail4,master.railcolor,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail1,master.railcolor,dir,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail2,master.railcolor,dir,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail3,master.railcolor,dir,master.railicon)
+    await createCardFromHtml(railhtml,cardData.rail,master.rail4,master.railcolor,dir,master.railicon)
 
     //util
     const utilpath = "resources\\cardUtil.html"
     const utilhtml = await getHtmlFromFileOnDisk(utilpath);
-    await createCardFromHtml(utilhtml,cardData.util,master.util1,master.util1color,master.util1icon)
-    await createCardFromHtml(utilhtml,cardData.util,master.util2,master.util2color,master.util2icon)
+    await createCardFromHtml(utilhtml,cardData.util,master.util1,master.util1color,dir,master.util1icon)
+    await createCardFromHtml(utilhtml,cardData.util,master.util2,master.util2color,dir,master.util2icon)
 
 }
 
@@ -196,9 +201,14 @@ function getTimeInMiliseconds() {
     return new Date().getTime()
 }
 
-async function createImageFromHtmlWithArgs(htmlin, contentin) {
+//get random number between 1000 and 9999
+function getRandomNumber() {
+    return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+}
+
+async function createImageFromHtmlWithArgs(htmlin, contentin,dir) {
     const image = await nodeHtmlToImage({
-        output: './image'+ getTimeInMiliseconds() +'.png' ,
+        output: dir +'/board.png' ,
         html: htmlin,
         content: contentin,
         // encoding: 'base64',
@@ -331,9 +341,9 @@ async function createImageFromHtml(htmlin) {
 
 
 
-async function createCardFromHtml(htmlin,cardPrompts,name,color, icon="") {
+async function createCardFromHtml(htmlin,cardPrompts,name,color,dir, icon="") {
     const image = await nodeHtmlToImage({
-        output: './card' + name + getTimeInMiliseconds() +'.png' ,
+        output: dir + '/card' + name +'.png' ,
         html: htmlin,
         content: { 
             title: name,

@@ -77,7 +77,7 @@ function App() {
     chestRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
   const scrollToParking = () => {
-    parkingRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    parkingRef.current.scrollIntoView({ behavior: 'smooth', block: 'center'  })
   }
   const scrollToJail = () => {
     jailRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -588,7 +588,9 @@ return (
         <TilePreviewWithIcon name={"Free " + master.parking} icon={master.parkingicon} color={master.parkingcolor} currency={master.currency} price={''}></TilePreviewWithIcon>
       </div>
 
-      <pre>{JSON.stringify(master, null, 2)}</pre>
+      <br>
+      </br>
+      <h1>-</h1>
     </div>
 
   </div>
