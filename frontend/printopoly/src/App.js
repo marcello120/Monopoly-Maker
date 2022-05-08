@@ -32,6 +32,8 @@ function App() {
   const chestRef = useRef();
   const parkingRef = useRef();
   const jailRef = useRef();
+  const titleRef = useRef();
+
 
 
 
@@ -80,6 +82,10 @@ function App() {
   const scrollToJail = () => {
     jailRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
+  const scrollToTitle = () => {
+    titleRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
 
 
   const [master, setMaster] = useState(
@@ -441,21 +447,23 @@ const postData = async () => {
 return (
   <div className="App">
     <div className='left'>
-      <h1>Title</h1>
-      <div>
-        <label> Title: </label>
+      <div className='heading2'> <h1>Title</h1></div>
+      <div className='neu'>
+        <label className='desc'> Title: </label>
         <input
+        className='input'
           value={master.title}
           type="text"
           onChange={e => setMaster({ ...master, title: e.target.value })}
           name="title"
+          onFocus={e => scrollToTitle()}
         />
       </div>
 
-      <h1>Currency</h1>
-      <div>
-        <label> Currency: </label>
-        <div className='center'>
+      <div className='heading2'> <h1>Currency</h1></div>
+      <div className='iconcontainer'>
+        <label className='desc' > Currency: </label>
+        <div className='iconstyle'>
           <IconPicker
             value={master.currency}
             onChange={(v) => setMaster({ ...master, currency: v })}
@@ -463,8 +471,8 @@ return (
         </div>
       </div>
 
-
-      <h1>Properties</h1>
+        <div className='heading2' ><h1>Properties</h1> </div>
+      
       <DualPropertyInput number={1} incolor={"brown"} master={master} setMaster={setMaster} scroll={scrollToBrown}></DualPropertyInput>
       <TriplePropertyInput number={2} incolor={"cyan"} master={master} setMaster={setMaster} scroll={scrollToCyan}></TriplePropertyInput>
       <TriplePropertyInput number={3} incolor={"purple"} master={master} setMaster={setMaster} scroll={scrollToPurple}></TriplePropertyInput>
@@ -474,11 +482,10 @@ return (
       <TriplePropertyInput number={7} incolor={"green"} master={master} setMaster={setMaster} scroll={scrollToGreen}></TriplePropertyInput>
       <DualPropertyInput number={8} incolor={"blue"} master={master} setMaster={setMaster} scroll={scrollToBlue}></DualPropertyInput>
 
-      <h1>Specials</h1>
+      <div className='heading2'> <h1>Specials</h1></div>
       <DualPropertyInputWithIcon title={"Taxes"} incolor={"tax"} master={master} setMaster={setMaster} scroll={scrollToTax} ></DualPropertyInputWithIcon>
       <DualPropertyInputWithIcon title={"Utility"} incolor={"util"} master={master} setMaster={setMaster} scroll={scrollToUtility}></DualPropertyInputWithIcon>
       <QuadPropertyInputWithIcon title={"Transportation"} incolor={"rail"} master={master} setMaster={setMaster} scroll={scrollToRail}></QuadPropertyInputWithIcon>
-      <h2>Cards</h2>
       <SinglePropertyInputWithIcon title={"Chance"} incolor={"chance"} master={master} setMaster={setMaster} scroll={scrollToChance}></SinglePropertyInputWithIcon>
       <SinglePropertyInputWithIcon title={"Community Chest"} incolor={"chest"} master={master} setMaster={setMaster} scroll={scrollToChest}></SinglePropertyInputWithIcon>
 
@@ -486,8 +493,10 @@ return (
 
 
       <SinglePropertyInputWithIcon title={"Jail"} incolor={"jail"} master={master} setMaster={setMaster} scroll={scrollToJail}></SinglePropertyInputWithIcon>
-      <h2>Go to Jail Icon</h2>
+      <div className='neu'>
+      <div className='neutext'>  <h2> Go to Jail Icon: </h2></div>
       <IconChooser master={master} setMaster={setMaster} iconName={"gojailicon"} iconColor={"gojailcolor"} scroll={scrollToJail} ></IconChooser>
+      </div>
 
       <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
 
@@ -496,7 +505,7 @@ return (
     </div>
     <div className='right'>
 
-      <h1 className="title">{master.title}</h1>
+      <h1 ref={titleRef} className="title">{master.title}</h1>
 
       <div className='exprow' ref={brownRef}>
         <TilePreview name={master.brown1} color={master.browncolor} currency={master.currency} price={cardMaster.brown1.price}></TilePreview>

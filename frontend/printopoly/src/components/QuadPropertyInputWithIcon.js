@@ -14,13 +14,14 @@ const QuadPropertyInputWithIcon = (props) => {
 
 
     return (
-        <div>
-            <h2>{props.title}</h2>
+        <div className='neu'>
+            <h2 className='neutext'>{props.title}:</h2>
             <div>
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon} iconColor={propertycolor} scroll={props.scroll}></IconChooser>
                 <div>
-                <label> {props.title} 1: </label>
+                <label className='desc'> {props.title} 1: </label>
                 <input
+                    className='input'
                     value={props.master[property1]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
@@ -29,8 +30,9 @@ const QuadPropertyInputWithIcon = (props) => {
                 />
                 </div>
                 <div> 
-                <label> {props.title} 2: </label>
+                <label  className='desc' > {props.title} 2: </label>
                     <input
+                    className='input'
                     value={props.master[property2]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}
@@ -40,9 +42,10 @@ const QuadPropertyInputWithIcon = (props) => {
                 </div>
 
                 <div>
-                <label> {props.title} 3: </label>
+                <label  className='desc'>  {props.title} 3: </label>
 
                 <input
+                    className='input'
                     value={props.master[property3]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property3]: e.target.value })}
@@ -51,9 +54,10 @@ const QuadPropertyInputWithIcon = (props) => {
                 />
                 </div>
                 <div>
-                <label> {props.title} 4: </label>
+                <label  className='desc'> {props.title} 4: </label>
 
                 <input
+                    className='input'
                     value={props.master[property4]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property4]: e.target.value })}

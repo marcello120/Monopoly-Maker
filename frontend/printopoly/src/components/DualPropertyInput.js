@@ -14,11 +14,14 @@ const DualPropertyInput = (props) => {
     }, []);
 
     return (
-        <div>
-            <h2>Property group {props.number}</h2>
+        <div className='neu' 
+        // style={{borderColor: props.master[propertyColor]}}
+        >
+            <h2 className='neutext'>Property group {props.number}:</h2>
             <div>
-                <label>pick property color:</label>
+                <label className='desc'>Property color:</label>
                 <input type="color"
+                    className='colorinput'
                     id={propertyColor}
                     name={propertyColor}
                     value={props.master[propertyColor]}
@@ -27,8 +30,9 @@ const DualPropertyInput = (props) => {
                 />
             </div>
             <div>
-                <label> Property {props.number}/1 </label>
+                <label className='desc'> Property {props.number}/1 </label>
                 <input
+                    className='input'
                     value={props.master[property1]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
@@ -37,8 +41,9 @@ const DualPropertyInput = (props) => {
                 />
             </div>
             <div>
-                <label> Property {props.number}/2 </label>
+                <label className='desc'> Property {props.number}/2 </label>
                 <input
+                    className='input'
                     value={props.master[property2]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}

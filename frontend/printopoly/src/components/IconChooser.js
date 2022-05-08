@@ -28,30 +28,24 @@ const IconChooser = (props) => {
 
 
     return (
-        <div>
-            <div>{props.master[props.iconName]}</div>
-            <div className='center'>
-                <div>Choose Icon:</div>
-                <div style={{ display: 'flex', justifyContent: "center" }}>
-                    <div style={{ display: 'inline-block' }}>
-                        <input type="color"
-                            id={props.iconColor}
-                            name={props.iconColor}
-                            value={props.master[props.iconColor]}
-                            onChange={e => props.setMaster({ ...props.master, [props.iconColor]: e.target.value })}
-                            onFocus={e =>  props.scroll ? props.scroll(): console.log("no scroll")}
-                        />                        
-                        <IconPicker
-                            value={props.master[props.iconName]}
-                            onChange={(v) => props.setMaster({ ...props.master, [props.iconName]: v })}
-                            onClick={e => props.scroll ? props.scroll(): console.log("no scroll")}
-                        />
-                    </div>
-                    <span style={{ padding: 10 }}>
-                        <Icon iconName={props.master[props.iconName]} size={50} color={props.master[props.iconColor]} />
-                    </span>
-                </div>
-            </div>
+        <div className='iconcontainer2'>
+            <label className='desc'> Icon </label>
+            <input type="color"
+                className='iconcolorinput'
+                id={props.iconColor}
+                name={props.iconColor}
+                value={props.master[props.iconColor]}
+                onChange={e => props.setMaster({ ...props.master, [props.iconColor]: e.target.value })}
+                onFocus={e => props.scroll ? props.scroll() : console.log("no scroll")}
+            />
+            <IconPicker
+                value={props.master[props.iconName]}
+                onChange={(v) => props.setMaster({ ...props.master, [props.iconName]: v })}
+                onClick={e => props.scroll ? props.scroll() : console.log("no scroll")}
+            />
+            <span style={{paddingLeft: '5px' }}>
+                <Icon iconName={props.master[props.iconName]} size={50} color={props.master[props.iconColor]} />
+            </span>
         </div>
     )
 }

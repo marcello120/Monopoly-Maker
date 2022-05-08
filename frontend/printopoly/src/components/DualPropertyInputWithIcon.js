@@ -16,25 +16,25 @@ const DualPropertyInputWithIcon = (props) => {
 
 
     return (
-        <div>
-            <h2>{props.title}</h2>
-            <div>
-                <h4>  {props.title }/1 </h4>
+        <div className='neu'>
+                <div className='neutext'>  <h2>  {props.title } 1: </h2></div>
+               
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon1} iconColor={propertycolor1} ></IconChooser>
-                <label> {incolor + " 1:"} </label>
+                <label className='desc'> {incolor + " 1:"} </label>
                 <input
+                className='input'
                     value={props.master[property1]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property1]: e.target.value })}
                     onFocus={e => props.scroll ? props.scroll(): console.log("no scroll")}
                     name={property1}
                 />
-            </div>
             <div>
-                <h4> {props.title }/2 </h4>
+            <div className='neutext'>  <h2>  {props.title } 2: </h2></div>
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon2} iconColor={propertycolor2} ></IconChooser>
-                <label> {incolor + " 2:"} </label>
+                <label className='desc' > {incolor + " 2:"} </label>
                 <input
+                    className='input'
                     value={props.master[property2]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [property2]: e.target.value })}

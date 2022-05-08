@@ -10,12 +10,13 @@ const SinglePropertyInputWithIcon = (props) => {
 
 
     return (
-        <div>
-            <h2>{props.title}</h2>
+        <div className='neu'>
+                <div className='neutext'>  <h2>  {props.title }:  </h2></div>
             <div>
                 <IconChooser master={props.master} setMaster={props.setMaster} iconName={propertyicon} iconColor={propertycolor} scroll={props.scroll} ></IconChooser>
-                <label> {props.title} : </label>
+                <label className='desc'> {props.title} : </label>
                 <input
+                    className='input'
                     value={props.master[incolor]}
                     type="text"
                     onChange={e => props.setMaster({ ...props.master, [incolor]: e.target.value })}
