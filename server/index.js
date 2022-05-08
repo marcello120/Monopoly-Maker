@@ -3,6 +3,7 @@ const cors = require('cors')({ origin: true });
 const nodeHtmlToImage = require('node-html-to-image')
 const fs = require('fs');
 const axios = require('axios');
+const archiver = require('archiver');
 
 
 
@@ -41,10 +42,32 @@ app.post('/create', async (req, res) => {
     console.log("Create dir " + dir)
     fs.mkdirSync(dir);
 
-    doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
-    createCards(req.body.printopoly, req.body.cards,dir)
+    await doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
+    // await createCards(req.body.printopoly, req.body.cards,dir)
+
+    zipDirectory(dir,'./out/' + uniqueId + '.zip')
+
     res.status(200).json({ message: req.body.printopoly })
 })
+
+app.post('/printopoly', async (req, res) => {
+    console.log(req.body);
+    const uniqueId = getTimeInMiliseconds() + "_" + getRandomNumber()
+    const dir = './out/' + uniqueId
+    console.log("Create dir " + dir)
+    fs.mkdirSync(dir);
+
+    await doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
+    await createCards(req.body.printopoly, req.body.cards,dir)
+
+    await zipDirectory(dir,'./out/' + uniqueId + '.zip')
+
+    const file = './out/' + uniqueId + '.zip';
+    // const file = './test/brown1.zip'
+    res.download(file); // Set disposition and send it.
+
+})
+
 
 function getCardPrompts(){
     return { 
@@ -365,6 +388,29 @@ async function createCardFromHtml(htmlin,cardPrompts,name,color,dir, icon="") {
       })
     return image;
 }
+
+async function zipDirectory(source, dest) {
+    const stream = fs.createWriteStream(dest);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+  
+    archive.on('error', function(err) {
+    throw err;
+    });
+  
+    await new Promise((resolve, reject) => {
+      archive.pipe(stream);
+      archive.directory(source, false);
+      archive.on('error', err => {throw err;});
+      archive.finalize();
+  
+      stream
+          .on('close', function() {
+          console.log(`zipped ${archive.pointer()} total bytes.`);
+          resolve();
+          });
+    });
+  }
+
 
 // const { join, extname, basename } = require('path');
 // const { readdirSync, renameSync } = require('fs');

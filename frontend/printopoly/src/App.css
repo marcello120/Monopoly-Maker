@@ -53,21 +53,35 @@
   width: 40%;
   height: 100%;
   right: 0;
-  overflow: hidden;
-  /* overflow: auto; */
-
-
-
-  /* background-color: #92e39e;
-  opacity: 1;
-  background: linear-gradient(135deg, #ffffff55 25%, transparent 25%) -18px 0/ 36px 36px, linear-gradient(225deg, #ffffff 25%, transparent 25%) -18px 0/ 36px 36px, linear-gradient(315deg, #ffffff55 25%, transparent 25%) 0px 0/ 36px 36px, linear-gradient(45deg, #ffffff 25%, #92e39e 25%) 0px 0/ 36px 36px; */
-
+  /* overflow: hidden; */
+  overflow: auto;
   background-color: #d4fcda;
   opacity: 1;
   background-image: radial-gradient(circle at center center, #d4fcda, #d4fcda), repeating-radial-gradient(circle at center center, #d4fcda, #d4fcda, 18px, transparent 36px, transparent 18px);
   background-blend-mode: multiply;
 
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+    
 }
+.right::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+
+
+@media screen and (min-width: 5px) and (max-width: 600px)
+{
+    .left
+    {
+      width: 100%;
+    }
+    .right{
+      width: 0%;
+    }
+}
+
+
 
 .center{
   margin: auto;
@@ -116,7 +130,7 @@
 .submitButton{
   justify-content: center;
   margin: 50px;
-  width: 15%;
+  width: 200px;
   padding: 10px;
   font-family: "Oswald", sans-serif;
   font-size: 60px;
@@ -141,6 +155,14 @@
   background-color: red;
   transform: translateY(-1px);
  }
+
+ .submitButton:disabled,
+ .submitButton[disabled]{
+  background-color: #00ff2241;
+  box-shadow: 0px 0px 0px rgba(255, 0, 0, 0.4);
+  color: #fff;
+  transform: translateY(7px);
+}
 
  /* width */
 ::-webkit-scrollbar {
@@ -217,7 +239,7 @@ box-shadow:  14px 14px 47px #79907c,
   margin-bottom: 10px;
   width: 48%;
   border: black solid 3px;
-  height: 4vh;
+  height: 40px
 }
 
 .heading2{
