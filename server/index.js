@@ -62,10 +62,32 @@ app.post('/printopoly', async (req, res) => {
 
     await zipDirectory(dir,'./out/' + uniqueId + '.zip')
 
-    const file = './out/' + uniqueId + '.zip';
+    const file =  await './out/' + uniqueId + '.zip';
     // const file = './test/brown1.zip'
-    res.download(file); // Set disposition and send it.
 
+    await res.download(file , function(err){
+        fs.rm(dir, { recursive:true,  force: true }, (err) => {
+            if(err){
+                // File deletion failed
+                console.error("Something fucky going on");
+                console.error(err.message);
+                return;
+            }
+            console.log("File deleted successfully");
+                  })
+        
+        fs.unlink(file, function(err) {
+            if(err && err.code == 'ENOENT') {
+                // file doens't exist
+                console.info("File doesn't exist, won't remove it.");
+            } else if (err) {
+                // other errors, e.g. maybe we don't have enough permission
+                console.error("Error occurred while trying to remove file");
+            } else {
+                console.info(`removed`);
+            }
+        });
+    }); 
 })
 
 

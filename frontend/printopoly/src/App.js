@@ -525,8 +525,8 @@ function App() {
         <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
 
 
-        {loading ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic</h1></div>: <></>}
-        <button disabled={loading}  className='submitButton' onClick={doit}>Post</button>
+        {loading ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
+        <button disabled={loading}  className='submitButton' onClick={doit}>Print</button>
       </div>
       <div className='right'>
 
