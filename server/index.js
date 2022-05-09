@@ -17,38 +17,38 @@ app.use(express.json())
 app.listen(process.env.PORT || 5000)
 
 
-app.get('/hello', (req, res) => {
-    console.log("hello");
-    doHTML()
-    res.status(200).json({ message: 'hello' })
-})
+// app.get('/hello', (req, res) => {
+//     console.log("hello");
+//     doHTML()
+//     res.status(200).json({ message: 'hello' })
+// })
 
 app.get('/test', (req, res) => {
     res.status(200).json({ message: 'test' })
 })
 
 
-app.get('/card', (req, res) => {
-    console.log("card");
-    doCardsWithArgs()
-    createCards(req.body.printopoly, req.body.cards)
-    res.status(200).json({ message: 'waotd' })
-})
+// app.get('/card', (req, res) => {
+//     console.log("card");
+//     doCardsWithArgs()
+//     createCards(req.body.printopoly, req.body.cards)
+//     res.status(200).json({ message: 'waotd' })
+// })
 
-app.post('/create', async (req, res) => {
-    // console.log(req.body);
-    const uniqueId = getTimeInMiliseconds() + "_" + getRandomNumber()
-    const dir = './out/' + uniqueId
-    console.log("Create dir " + dir)
-    fs.mkdirSync(dir);
+// app.post('/create', async (req, res) => {
+//     // console.log(req.body);
+//     const uniqueId = getTimeInMiliseconds() + "_" + getRandomNumber()
+//     const dir = './out/' + uniqueId
+//     console.log("Create dir " + dir)
+//     fs.mkdirSync(dir);
 
-    await doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
-    // await createCards(req.body.printopoly, req.body.cards,dir)
+//     await doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
+//     // await createCards(req.body.printopoly, req.body.cards,dir)
 
-    zipDirectory(dir,'./out/' + uniqueId + '.zip')
+//     zipDirectory(dir,'./out/' + uniqueId + '.zip')
 
-    res.status(200).json({ message: req.body.printopoly })
-})
+//     res.status(200).json({ message: req.body.printopoly })
+// })
 
 app.post('/printopoly', async (req, res) => {
     console.log(req.body);
