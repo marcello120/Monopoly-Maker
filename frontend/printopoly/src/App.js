@@ -427,6 +427,8 @@ function App() {
       url: path , //your url
       method: 'POST',
       responseType: 'blob', // important
+      contentType: 'application/json',
+      origin: 'printopoly',
       data: {
         printopoly: master, cards: cardMaster 
       }
