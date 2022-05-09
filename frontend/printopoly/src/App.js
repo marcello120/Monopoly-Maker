@@ -13,8 +13,6 @@ import TilePreviewWithIcon from './components/TilePreviewWithIcon';
 
 
 
-
-
 function App() {
 
   const brownRef = useRef();
@@ -423,9 +421,10 @@ function App() {
   }
 
   const doit = async () => {
+    const  path = process.env.REACT_APP_SERVER_PATH + '/printopoly';
     setLoading(true);
     axios({
-      url: 'http://localhost:5000/printopoly', //your url
+      url: path , //your url
       method: 'POST',
       responseType: 'blob', // important
       data: {
@@ -483,7 +482,6 @@ function App() {
             onFocus={e => scrollToTitle()}
           />
         </div>
-
         <div className='heading2'> <h1>Currency</h1></div>
         <div className='iconcontainer'>
           <label className='desc' > Currency: </label>
