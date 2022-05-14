@@ -84,7 +84,9 @@ function App() {
     titleRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("none");
+
+  const [grouping, setGrouping] = useState(true);
 
 
   const [master, setMaster] = useState(
@@ -422,7 +424,7 @@ function App() {
 
   const doit = async () => {
     const  path = process.env.REACT_APP_SERVER_PATH + '/printopoly';
-    setLoading(true);
+    setLoading("loading");
     axios({
       url: path , //your url
       method: 'POST',
@@ -430,7 +432,7 @@ function App() {
       contentType: 'application/json',
       origin: 'printopoly',
       data: {
-        printopoly: master, cards: cardMaster 
+        printopoly: master, cards: cardMaster , checked : grouping
       }
   }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -439,7 +441,10 @@ function App() {
       link.setAttribute('download', 'printopoly.zip'); //or any other extension
       document.body.appendChild(link);
       link.click();
-      setLoading(false);
+      setLoading("done");
+  }).catch((error) => {
+      console.log(error);
+      setLoading("error");
   });
   }
 
@@ -524,9 +529,27 @@ function App() {
 
         <SinglePropertyInputWithIcon title={"Parking"} incolor={"parking"} master={master} setMaster={setMaster} scroll={scrollToParking}></SinglePropertyInputWithIcon>
 
+        <div className='neu'>
+            <div className='iconcontainer1'>
+            <input
+                className='checkboxstyle'
+                type="checkbox"
+                name="site_name"
+                checked={grouping}
+                onChange={(e) =>{
+                  console.log(grouping)
+                  setGrouping(!grouping)
+                  }}
 
-        {loading ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
-        <button disabled={loading}  className='submitButton' onClick={doit}>Print</button>
+              />       
+              <label className='desc'> Group Images</label>  
+            </div>
+        </div>
+        {(loading==="loading") ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
+        {(loading==="none") ? <div className='heading2'> <h1>Press Print to Download Files</h1></div>: <></>}
+        {(loading==="done") ? <div className='heading2'> <h1>Download Successful</h1></div>: <></>}
+        {(loading==="error") ? <div className='heading2'> <h1>Error occured. Try again by refreshing the page. If this continues to happen just give up. This is barely a functioning project.</h1></div>: <></>}
+        <button disabled={loading==="loading" || loading==="error"}  className='submitButton' onClick={doit}>Print</button>
       </div>
       <div className='right'>
 

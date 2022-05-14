@@ -6,19 +6,7 @@ const axios = require('axios');
 const archiver = require('archiver');
 
 
-
-require('dotenv').config();
-
 const app = express()
-
-// const corsOptions ={
-//     origin:'*', 
-//     credentials:true,            //access-control-allow-credentials:true
-//     optionSuccessStatus:200,
-//  }
- 
-
-// app.use(cors(corsOptions));
 
 
 app.use(cors)
@@ -33,6 +21,11 @@ app.use(function(req, res, next) {
     next();
 });
 
+// app.use(function (req, res, next) {
+//     req.headers.origin = req.headers.origin || req.headers.host;
+//     next();
+//   });
+
 
 // app.get('/hello', (req, res) => {
 //     console.log("hello");
@@ -40,8 +33,12 @@ app.use(function(req, res, next) {
 //     res.status(200).json({ message: 'hello' })
 // })
 
-app.get('/test', (req, res) => {
-    res.status(200).json({ message: 'test' })
+app.get('/test', async (req, res) => {
+    // const path = "./resources/cardBulk.html"
+    // const html = await getHtmlFromFileOnDisk(path)
+    // const cardPrompts = await getCardPrompts()
+    // createCardFromHtml(html,cardPrompts,"borwn1","red","./out/")
+    res.status(200).json({ message: 'test3' })
 })
 
 
@@ -68,24 +65,42 @@ app.get('/test', (req, res) => {
 // })
 
 app.post('/printopoly', async (req, res) => {
-    console.log(req.body);
+    console.log("recieved request");
+    console.time('printopoly')
     res.set('Access-Control-Allow-Origin', '*');
     const uniqueId = getTimeInMiliseconds() + "_" + getRandomNumber()
     const dir = './out/' + uniqueId
     console.log("Create dir " + dir)
     await fs.mkdir(dir, (err) => {
         if (err) {
+            console.log("Error creating " + dir);
             return console.error(err);
         }
-        console.log('Directory created successfully!');
+        console.log('Directory created successfully! ' + dir);
     });
+    await convertImages(req.body.printopoly)
+
     await doHTMLWithArgs(req.body.printopoly, req.body.cards,dir)
-    await createCards(req.body.printopoly, req.body.cards,dir)
+
+    if(req.body.checked){
+        console.log("grouping cards")
+        await createCardsGroup(req.body.printopoly, req.body.cards,dir)
+    }
+    else{
+        console.log("individual cards")
+        await createCardsAlone(req.body.printopoly, req.body.cards,dir)
+
+    }
+
+    console.log("Created images");
 
     await zipDirectory(dir,'./out/' + uniqueId + '.zip')
+    console.log("Created zip");
 
     const file =  await './out/' + uniqueId + '.zip';
     // const file = './test/brown1.zip'
+
+    console.timeEnd('printopoly')
 
     await res.download(file , function(err){
         fs.rm(dir, { recursive:true,  force: true }, (err) => {
@@ -96,8 +111,7 @@ app.post('/printopoly', async (req, res) => {
                 return;
             }
             console.log("File deleted successfully");
-                  })
-        
+                  });
         fs.unlink(file, function(err) {
             if(err && err.code == 'ENOENT') {
                 // file doens't exist
@@ -127,11 +141,14 @@ function getCardPrompts(){
         housecost: "100",
         hotelcost: "100",
         currency: 'fa-light fa-dollar-sign',
+        test1 : {
+            test2: "test2"
+        }
     }
 }
 
 async function doHTML(){
-    const path = "resources\\index.html"
+    const path = "./resources/index.html"
     const html = await getHtmlFromFileOnDisk(path)
     await createImageFromHtml(html)
 
@@ -143,11 +160,10 @@ async function doHTML(){
 }
 
 async function doHTMLWithArgs(args, cards,dir) {
-    const path = "resources/index.html"
+    const path = "./resources/index.html"
     const html = await getHtmlFromFileOnDisk(path)
-    convertImages(args)
     addPrice(args,cards)
-    console.log(args)
+    // console.log(args)
 
    return await createImageFromHtmlWithArgs(html,args,dir)
 }
@@ -191,63 +207,309 @@ async function doCardsWithArgs(args){
     // convertImages(args)
     // await createImageFromHtmlWithArgs(html,args)
 
-    const cardpath = "resources\\card.html"
+    const cardpath = "./resources/card.html"
     const cardhtml = await getHtmlFromFileOnDisk(cardpath)
     const cardPrompts = getCardPrompts()
     await createCardFromHtml(cardhtml,cardPrompts)
 
 }
 
-async function createCards(master,cardData,dir){
+async function createCardsAsync(master,cardData,dir){
     // cardData = loadCardJson();
-     const cardpath = "resources\\card.html"
+     const cardpath = "./resources/card.html"
      const cardhtml = await getHtmlFromFileOnDisk(cardpath);
-    //borwn
-    await createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor,dir)
-    await createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor,dir)
-    //cyan
-    await createCardFromHtml(cardhtml,cardData.cyan1,master.cyan1,master.cyancolor,dir)
-    await createCardFromHtml(cardhtml,cardData.cyan2,master.cyan2,master.cyancolor,dir)
-    await createCardFromHtml(cardhtml,cardData.cyan3,master.cyan3,master.cyancolor,dir)
-    //pink
-    await createCardFromHtml(cardhtml,cardData.purple1,master.purple1,master.purplecolor,dir)
-    await createCardFromHtml(cardhtml,cardData.purple2,master.purple2,master.purplecolor,dir)
-    await createCardFromHtml(cardhtml,cardData.purple3,master.purple3,master.purplecolor,dir)
-    //orange
-    await createCardFromHtml(cardhtml,cardData.orange1,master.orange1,master.orangecolor,dir)
-    await createCardFromHtml(cardhtml,cardData.orange2,master.orange2,master.orangecolor,dir)
-    await createCardFromHtml(cardhtml,cardData.orange3,master.orange3,master.orangecolor,dir)
-    //red
-    await createCardFromHtml(cardhtml,cardData.red1,master.red1,master.redcolor,dir)
-    await createCardFromHtml(cardhtml,cardData.red2,master.red2,master.redcolor,dir)
-    await createCardFromHtml(cardhtml,cardData.red3,master.red3,master.redcolor,dir)
-    //yellow
-    await createCardFromHtml(cardhtml,cardData.yellow1,master.yellow1,master.yellowcolor,dir)
-    await createCardFromHtml(cardhtml,cardData.yellow2,master.yellow2,master.yellowcolor,dir)
-    await createCardFromHtml(cardhtml,cardData.yellow3,master.yellow3,master.yellowcolor,dir)
-    //green
-    await createCardFromHtml(cardhtml,cardData.green1,master.green1,master.greencolor,dir)
-    await createCardFromHtml(cardhtml,cardData.green2,master.green2,master.greencolor,dir)
-    await createCardFromHtml(cardhtml,cardData.green3,master.green3,master.greencolor,dir)
-    //blue
-    await createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor,dir)
-    await createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor,dir)
+
+    await Promise.all([
+        //borwn
+         createCardFromHtml(cardhtml,cardData.brown1,master.brown1,master.browncolor,dir),
+         createCardFromHtml(cardhtml,cardData.brown2,master.brown2,master.browncolor,dir),
+        //cyan
+         createCardFromHtml(cardhtml,cardData.cyan1,master.cyan1,master.cyancolor,dir),
+         createCardFromHtml(cardhtml,cardData.cyan2,master.cyan2,master.cyancolor,dir),
+         createCardFromHtml(cardhtml,cardData.cyan3,master.cyan3,master.cyancolor,dir)
+    ])
+
+    await Promise.all([
+        //pink
+        createCardFromHtml(cardhtml,cardData.purple1,master.purple1,master.purplecolor,dir),
+        createCardFromHtml(cardhtml,cardData.purple2,master.purple2,master.purplecolor,dir),
+        createCardFromHtml(cardhtml,cardData.purple3,master.purple3,master.purplecolor,dir),
+        //orange
+        createCardFromHtml(cardhtml,cardData.orange1,master.orange1,master.orangecolor,dir),
+        createCardFromHtml(cardhtml,cardData.orange2,master.orange2,master.orangecolor,dir),
+        createCardFromHtml(cardhtml,cardData.orange3,master.orange3,master.orangecolor,dir)
+    ])        
+
+    await Promise.all([
+        //red
+        createCardFromHtml(cardhtml,cardData.red1,master.red1,master.redcolor,dir),
+        createCardFromHtml(cardhtml,cardData.red2,master.red2,master.redcolor,dir),
+        createCardFromHtml(cardhtml,cardData.red3,master.red3,master.redcolor,dir),
+        //yellow
+        createCardFromHtml(cardhtml,cardData.yellow1,master.yellow1,master.yellowcolor,dir),
+        createCardFromHtml(cardhtml,cardData.yellow2,master.yellow2,master.yellowcolor,dir),
+        createCardFromHtml(cardhtml,cardData.yellow3,master.yellow3,master.yellowcolor,dir)
+    ])
+
+    await Promise.all([
+        //green
+        createCardFromHtml(cardhtml,cardData.green1,master.green1,master.greencolor,dir),
+        createCardFromHtml(cardhtml,cardData.green2,master.green2,master.greencolor,dir),
+        createCardFromHtml(cardhtml,cardData.green3,master.green3,master.greencolor,dir),
+        //blue
+        createCardFromHtml(cardhtml,cardData.blue1,master.blue1,master.bluecolor,dir),
+        createCardFromHtml(cardhtml,cardData.blue2,master.blue2,master.bluecolor,dir)
+    ])    
+
 
     //rail
-    const railpath = "resources\\cardRail.html"
+    const railpath = "./resources/cardRail.html"
     const railhtml = await getHtmlFromFileOnDisk(railpath);
 
-    await createCardFromHtml(railhtml,cardData.rail,master.rail1,master.railcolor,dir,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail2,master.railcolor,dir,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail3,master.railcolor,dir,master.railicon)
-    await createCardFromHtml(railhtml,cardData.rail,master.rail4,master.railcolor,dir,master.railicon)
+    //util
+    const utilpath = "./resources/cardUtil.html"
+    const utilhtml = await getHtmlFromFileOnDisk(utilpath);
+
+    await Promise.all([
+        createCardFromHtml(railhtml,cardData.rail,master.rail1,master.railcolor,dir,master.railicon),
+        createCardFromHtml(railhtml,cardData.rail,master.rail2,master.railcolor,dir,master.railicon),
+        createCardFromHtml(railhtml,cardData.rail,master.rail3,master.railcolor,dir,master.railicon),
+        createCardFromHtml(railhtml,cardData.rail,master.rail4,master.railcolor,dir,master.railicon),
+
+        createCardFromHtml(utilhtml,cardData.util,master.util1,master.util1color,dir,master.util1icon),
+        createCardFromHtml(utilhtml,cardData.util,master.util2,master.util2color,dir,master.util2icon)
+    ])    
+}
+
+async function createCardsAlone(master, cardData, dir) {
+    // cardData = loadCardJson();
+    const cardpath = "./resources/card.html"
+    const cardhtml = await getHtmlFromFileOnDisk(cardpath);
+
+
+
+    //brown
+    const brown1Content = createCardContent(cardData.brown1, master.brown1, master.browncolor, dir);
+    const brown2Content = createCardContent(cardData.brown2, master.brown2, master.browncolor, dir);
+    //cyan
+    const cyan1Content = createCardContent(cardData.cyan1, master.cyan1, master.cyancolor, dir);
+    const cyan2Content = createCardContent(cardData.cyan2, master.cyan2, master.cyancolor, dir);
+    const cyan3Content = createCardContent(cardData.cyan3, master.cyan3, master.cyancolor, dir);
+    //pink
+    const purple1Content = createCardContent(cardData.purple1, master.purple1, master.purplecolor, dir);
+    const purple2Content = createCardContent(cardData.purple2, master.purple2, master.purplecolor, dir);
+    const purple3Content = createCardContent(cardData.purple3, master.purple3, master.purplecolor, dir);
+    //orange
+    const orange1Content = createCardContent(cardData.orange1, master.orange1, master.orangecolor, dir);
+    const orange2Content = createCardContent(cardData.orange2, master.orange2, master.orangecolor, dir);
+    const orange3Content = createCardContent(cardData.orange3, master.orange3, master.orangecolor, dir);
+    //red
+    const red1Content = createCardContent(cardData.red1, master.red1, master.redcolor, dir);
+    const red2Content = createCardContent(cardData.red2, master.red2, master.redcolor, dir);
+    const red3Content = createCardContent(cardData.red3, master.red3, master.redcolor, dir);
+    //yellow
+    const yellow1Content = createCardContent(cardData.yellow1, master.yellow1, master.yellowcolor, dir);
+    const yellow2Content = createCardContent(cardData.yellow2, master.yellow2, master.yellowcolor, dir);
+    const yellow3Content = createCardContent(cardData.yellow3, master.yellow3, master.yellowcolor, dir);
+    //green
+    const green1Content = createCardContent(cardData.green1, master.green1, master.greencolor, dir);
+    const green2Content = createCardContent(cardData.green2, master.green2, master.greencolor, dir);
+    const green3Content = createCardContent(cardData.green3, master.green3, master.greencolor, dir);
+    //blue
+    const blue1Content = createCardContent(cardData.blue1, master.blue1, master.bluecolor, dir);
+    const blue2Content = createCardContent(cardData.blue2, master.blue2, master.bluecolor, dir);
+
+    contentArray =[brown1Content,brown2Content,
+        cyan1Content,cyan2Content,cyan3Content,
+        purple1Content,purple2Content,purple3Content,
+        orange1Content,orange2Content,orange3Content,
+        red1Content,red2Content,red3Content,
+        yellow1Content,yellow2Content,yellow3Content,
+        green1Content,green2Content,green3Content,
+        blue1Content,blue2Content]
+
+    // await createCardFromHtmlBULK(cardhtml, contentArray);
+
+    await createCardFromHtmlBULK(cardhtml, contentArray);
+
+
+    //rail
+    const railpath = "./resources/cardRail.html"
+    const railhtml = await getHtmlFromFileOnDisk(railpath);
+
+    const rail1 = createCardContent(cardData.rail, master.rail1, master.railcolor, dir, master.railicon);
+    const rail2 = createCardContent(cardData.rail, master.rail2, master.railcolor, dir, master.railicon);
+    const rail3 = createCardContent(cardData.rail, master.rail3, master.railcolor, dir, master.railicon);
+    const rail4 = createCardContent(cardData.rail, master.rail4, master.railcolor, dir, master.railicon);
+
+    const railContentArray = [rail1,rail2,rail3,rail4]
+
+    // await createCardFromHtmlBULK(railhtml, railContentArray);
 
     //util
-    const utilpath = "resources\\cardUtil.html"
+    const utilpath = "./resources/cardUtil.html"
     const utilhtml = await getHtmlFromFileOnDisk(utilpath);
-    await createCardFromHtml(utilhtml,cardData.util,master.util1,master.util1color,dir,master.util1icon)
-    await createCardFromHtml(utilhtml,cardData.util,master.util2,master.util2color,dir,master.util2icon)
 
+    const util1 = createCardContent(cardData.util, master.util1, master.util1color, dir, master.util1icon);
+    const util2 = createCardContent(cardData.util, master.util2, master.util2color, dir, master.util2icon);
+
+    const utilContentArray = [util1,util2]
+
+    // await createCardFromHtmlBULK(utilhtml, utilContentArray);
+
+
+    await  Promise.all([createCardFromHtmlBULK(railhtml, railContentArray),createCardFromHtmlBULK(utilhtml, utilContentArray)])
+
+}
+
+
+async function createCardsGroup(master, cardData, dir) {
+    //brown
+    const brown1Content = createCardContentForGroup(cardData.brown1, master.brown1, master.browncolor);
+    const brown2Content = createCardContentForGroup(cardData.brown2, master.brown2, master.browncolor);
+    //cyan
+    const cyan1Content = createCardContentForGroup(cardData.cyan1, master.cyan1, master.cyancolor);
+    const cyan2Content = createCardContentForGroup(cardData.cyan2, master.cyan2, master.cyancolor);
+    const cyan3Content = createCardContentForGroup(cardData.cyan3, master.cyan3, master.cyancolor);
+    //pink
+    const purple1Content = createCardContentForGroup(cardData.purple1, master.purple1, master.purplecolor);
+    const purple2Content = createCardContentForGroup(cardData.purple2, master.purple2, master.purplecolor);
+    const purple3Content = createCardContentForGroup(cardData.purple3, master.purple3, master.purplecolor);
+    //orange
+    const orange1Content = createCardContentForGroup(cardData.orange1, master.orange1, master.orangecolor);
+    const orange2Content = createCardContentForGroup(cardData.orange2, master.orange2, master.orangecolor);
+    const orange3Content = createCardContentForGroup(cardData.orange3, master.orange3, master.orangecolor);
+    //red
+    const red1Content = createCardContentForGroup(cardData.red1, master.red1, master.redcolor);
+    const red2Content = createCardContentForGroup(cardData.red2, master.red2, master.redcolor);
+    const red3Content = createCardContentForGroup(cardData.red3, master.red3, master.redcolor);
+    //yellow
+    const yellow1Content = createCardContentForGroup(cardData.yellow1, master.yellow1, master.yellowcolor);
+    const yellow2Content = createCardContentForGroup(cardData.yellow2, master.yellow2, master.yellowcolor);
+    const yellow3Content = createCardContentForGroup(cardData.yellow3, master.yellow3, master.yellowcolor);
+    //green
+    const green1Content = createCardContentForGroup(cardData.green1, master.green1, master.greencolor);
+    const green2Content = createCardContentForGroup(cardData.green2, master.green2, master.greencolor);
+    const green3Content = createCardContentForGroup(cardData.green3, master.green3, master.greencolor);
+    //blue
+    const blue1Content = createCardContentForGroup(cardData.blue1, master.blue1, master.bluecolor);
+    const blue2Content = createCardContentForGroup(cardData.blue2, master.blue2, master.bluecolor);
+
+    //rail
+    const rail1Content = createCardContentForGroup(cardData.rail, master.rail1, master.railcolor, master.railicon);
+    const rail2Content = createCardContentForGroup(cardData.rail, master.rail2, master.railcolor, master.railicon);
+    const rail3Content = createCardContentForGroup(cardData.rail, master.rail3, master.railcolor, master.railicon);
+    const rail4Content = createCardContentForGroup(cardData.rail, master.rail4, master.railcolor, master.railicon);
+
+    //util
+    const util1Content = createCardContentForGroup(cardData.util, master.util1, master.util1color, master.util1icon);
+    const util2Content = createCardContentForGroup(cardData.util, master.util2, master.util2color, master.util2icon);
+
+
+    const pageProps1 = {
+        card1: brown1Content,
+        card2: brown2Content,
+        card3: cyan1Content,
+        card4: cyan2Content,
+        card5: cyan3Content,
+        card6: purple1Content,
+        card7: purple2Content,
+        card8: purple3Content,
+        card9: orange1Content
+    }
+
+    const pageProps2 = {
+        card1: orange2Content,
+        card2: orange3Content,
+        card3: red1Content,
+        card4: red2Content,
+        card5: red3Content,
+        card6: yellow1Content,
+        card7: yellow2Content,
+        card8: yellow3Content,
+        card9: green1Content
+    }
+
+    const pageProps3 = {
+        card1: green2Content,
+        card2: green3Content,
+        card3: blue1Content,
+        card4: blue2Content
+    }
+
+    const pageProps4 = {
+        card1: rail1Content,
+        card2: rail2Content,
+        card3: rail3Content,
+        card4: rail4Content,
+        card5: util1Content,
+        card6: util2Content
+    }
+
+
+
+    //pag1
+    const pagePath = "./resources/cardBulk.html"
+    const pageHtml = await getHtmlFromFileOnDisk(pagePath);
+
+    //pag1
+    const pageLastPath = "./resources/cardBulkLast.html"
+    const pageLastHtml = await getHtmlFromFileOnDisk(pageLastPath);
+
+    //rail + util
+    const railutilpath = "./resources/cardBulkRailUtil.html"
+    const railutilhtml = await getHtmlFromFileOnDisk(railutilpath);
+    
+
+    await createCardFromHtmlPage(pageHtml, pageProps1, dir, "1",master.currency);
+
+    await createCardFromHtmlPage(pageHtml, pageProps2, dir, "2",master.currency);
+
+    await createCardFromHtmlPage(pageLastHtml, pageProps3, dir, "3",master.currency);
+
+    await createCardFromHtmlPage(railutilhtml, pageProps4, dir, "4",master.currency);
+}
+
+
+function createCardContent(cardPrompts,name,color,dir, icon="") {
+    console.log("creating card " + name)
+  return { 
+        title: name,
+        color: color,
+        rent0: cardPrompts.rent0,
+        rent1: cardPrompts.rent1,
+        rent2: cardPrompts.rent2,
+        rent3: cardPrompts.rent3,
+        rent4: cardPrompts.rent4,
+        rentH: cardPrompts.rentH,
+        mortgage: cardPrompts.price/2,
+        housecost: cardPrompts.housecost,
+        hotelcost: cardPrompts.housecost,
+        icon: icon,
+        currency: cardPrompts.currency,
+        output: dir + '/card' + name +'.png' 
+    }
+}
+
+function createCardContentForGroup(cardPrompts,name,color, icon="") {
+    console.log("creating card " + name)
+    console.log("icon card " + icon)
+
+  return { 
+        title: name,
+        color: color,
+        rent0: cardPrompts.rent0,
+        rent1: cardPrompts.rent1,
+        rent2: cardPrompts.rent2,
+        rent3: cardPrompts.rent3,
+        rent4: cardPrompts.rent4,
+        rentH: cardPrompts.rentH,
+        mortgage: cardPrompts.price/2,
+        housecost: cardPrompts.housecost,
+        hotelcost: cardPrompts.housecost,
+        icon: icon,
+        currency: cardPrompts.currency,
+    }
 }
 
 
@@ -279,19 +541,19 @@ async function createImageFromHtmlWithArgs(htmlin, contentin,dir) {
         html: htmlin,
         content: contentin,
         // encoding: 'base64',
-        puppeteerArgs: { args: ["--no-sandbox"] }
+        puppeteerArgs: { args: ["--no-sandbox",'--disable-setuid-sandbox'] }
       })
     return image;
 }
 
 function loadIconJson () {
-    let rawdata =  fs.readFileSync('resources/iconData.json');
+    let rawdata =  fs.readFileSync('./resources/iconData.json');
     let iconData = JSON.parse(rawdata);
     return  iconData;
 }
 
 function loadCardJson(){
-    let rawdata =  fs.readFileSync('resources/cardData.json');
+    let rawdata =  fs.readFileSync('./resources/cardData.json');
     let cardData = JSON.parse(rawdata);
     return  cardData;
 }
@@ -312,7 +574,7 @@ function convertImages(argsin){
     argsin.tax1icon = getImage(argsin.tax1icon, data) + " fa-5x"
     argsin.tax2icon = getImage(argsin.tax2icon, data) + " fa-5x"
 
-    console.log(argsin)
+    // console.log(argsin)
 
 
 }
@@ -321,8 +583,8 @@ function getImage(name, data){
     if(!name || !data){
         return "fa-solid fa-face-dizzy fa-5x"
     }
-    console.log(name.toLowerCase());
-    console.log(data[name.toLowerCase()])
+    // console.log(name.toLowerCase());
+    // console.log(data[name.toLowerCase()])
     return data[name.toLowerCase()];
 }
 
@@ -401,14 +663,46 @@ async function createImageFromHtml(htmlin) {
             gojailcolor: "#000000",
         },
         // encoding: 'base64',
-        puppeteerArgs: { args: ["--no-sandbox"] }
+        puppeteerArgs: { args: ["--no-sandbox",'--disable-setuid-sandbox'] }
       })
     return image;
 }
 
+async function createCardFromHtmlPage(htmlin,promptObject,dir,num,currency) {
+    console.log("creating page " + num)
+    const image = await nodeHtmlToImage({
+        output: dir + '/page' + num +'.png' ,
+        html: htmlin,
+        content: { 
+            card1: promptObject.card1,
+            card2: promptObject.card2,
+            card3: promptObject.card3,
+            card4: promptObject.card4,
+            card5: promptObject.card5,
+            card6: promptObject.card6,
+            card7: promptObject.card7,
+            card8: promptObject.card8,
+            card9: promptObject.card9,
+            currency: currency
+        },
+        // encoding: 'base64',
+        puppeteerArgs: { args: ["--no-sandbox",'--disable-setuid-sandbox'] }
+      })
+    return image;
+}
 
+async function createCardFromHtmlBULK (htmlin,contentArray) {
+    const image = await nodeHtmlToImage({
+        html: htmlin,
+        content: contentArray,
+        // encoding: 'base64',
+        puppeteerArgs: { args: ["--no-sandbox",'--disable-setuid-sandbox'] }
+      })
+    return image;
+}
 
 async function createCardFromHtml(htmlin,cardPrompts,name,color,dir, icon="") {
+    console.log("creating card " + name)
     const image = await nodeHtmlToImage({
         output: dir + '/card' + name +'.png' ,
         html: htmlin,
@@ -426,9 +720,10 @@ async function createCardFromHtml(htmlin,cardPrompts,name,color,dir, icon="") {
             hotelcost: cardPrompts.housecost,
             icon: icon,
             currency: cardPrompts.currency,
+            test1: cardPrompts.test1,
         },
         // encoding: 'base64',
-        puppeteerArgs: { args: ["--no-sandbox"] }
+        puppeteerArgs: { args: ["--no-sandbox",'--disable-setuid-sandbox'] }
       })
     return image;
 }

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Monopoly card</title>
+<script src="https://kit.fontawesome.com/1ba891d6b2.js" crossorigin="anonymous"></script>
+<style>
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+
+
+
+body {
+  /* margin: 0; */
+  /* background-image: url("https://i.pinimg.com/originals/a4/73/cd/a473cda6c0a58d9b2e2bc2292d16c334.jpg");
+  background-position: center;
+  background-repeat: repeat;
+  background-size: 100px; */
+  font-family: "Oswald", sans-serif;
+  color: #080808;
+  height: 1220px;
+  width: 830px;
+}
+/* body {
+  background: #5c5e6f;
+  height: 400px;
+  width: 270px;
+} */
+
+.monopoly-card {
+  border: 2px solid #000;
+  position: relative;
+  background: #fff;
+  height: 400px;
+  width: 270px;
+}
+.monopoly-card:before {
+  display: block;
+  position: absolute;
+  content: " ";
+  height: 370px;
+  width: 240px;
+  border: solid 1px #000;
+  margin: 15px;
+}
+.monopoly-card:after {
+  display: block;
+  position: absolute;
+  content: " ";
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  content: "Printopoly";
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 5px;
+  text-align: center;
+}
+.monopoly-card_title {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  right: 25px;
+  height: 70px;
+  border: solid 2px #000;
+  text-align: center;
+  font-weight: 900;
+  font-size: 20px;
+  padding: 33px 0;
+}
+.monopoly-card_title:before {
+  display: block;
+  position: absolute;
+  content: " ";
+  content: "TITLE DEED";
+  top: 8px;
+  width: 100%;
+  font-size: 15px;
+}
+.monopoly-card_title {
+  background: {{color}};
+}
+.monopoly-card_content {
+  position: absolute;
+  padding: 3px;
+  bottom: 30px;
+  right: 25px;
+  top: 105px;
+  left: 25px;
+}
+.monopoly-card_content .description {
+  display: inline-block;
+  height: 26px;
+  width: 50%;
+  /* border: 1px solid red; */
+}
+.monopoly-card_content .monopoly-money {
+  float: right;
+}
+.monopoly-card_footer {
+  position: absolute;
+  padding: 10px 3px 3px 3px;
+  right: 25px;
+  top: 300px;
+  left: 25px;
+  border-top: solid 1px #000;
+}
+.monopoly-card_footer .description {
+  display: inline-block;
+  height: 29px;
+  width: 50%;
+  /* border: 1px solid red; */
+}
+.monopoly-card_footer .monopoly-money {
+  float: right;
+}
+
+.monopoly-money {
+  position: relative;
+  display: inline-block;
+  /* border: 1px solid #000; */
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #000000;
+  padding: 10px;
+  row-gap: 1px;
+  column-gap: 1px;
+}
+
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+
+<div class="grid">
+  <div class="monopoly-card">
+    <div class="monopoly-card_title" style="background-color: {{card1.color}};">
+       {{card1.title}}
+    </div>
+    <div class="monopoly-card_content">
+       <div class="description">Rent</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i> {{card1.rent0}}</div>
+       <div class="description">Rent 1</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.rent1}}</div>  
+       <div class="description">Rent 2</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.rent2}}</div>  
+       <div class="description">Rent 3</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.rent3}}</div>  
+       <div class="description">Rent 4</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.rent4}}</div>  
+       <div class="description">Rent Hotel</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.rentH}}</div> 
+       <div style="font-weight: bold;" class="description">Mortgage </div>
+       <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card1.mortgage}}</div>         
+    </div>
+ 
+    <div class="monopoly-card_footer">
+       <div class="description">Houses cost</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.housecost}}</div>
+       <div class="description">Hotels cost</div>
+       <div class="monopoly-money"><i class="{{currency}}"></i>{{card1.hotelcost}}</div>  
+    </div>  
+ </div>
+
+ <div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card2.color}};">
+     {{card2.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card2.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card2.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card2.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card3.color}};">
+     {{card3.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card3.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card3.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card3.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card4.color}};">
+     {{card4.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card4.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card4.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card4.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card5.color}};">
+     {{card5.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card5.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card5.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card5.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card6.color}};">
+     {{card6.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card6.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card6.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card6.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card7.color}};">
+     {{card7.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card7.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card7.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card7.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card8.color}};">
+     {{card8.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card8.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card8.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card8.hotelcost}}</div>  
+  </div>  
+</div>
+
+<div class="monopoly-card">
+  <div class="monopoly-card_title" style="background-color: {{card9.color}};">
+     {{card9.title}}
+  </div>
+  <div class="monopoly-card_content">
+     <div class="description">Rent</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i> {{card9.rent0}}</div>
+     <div class="description">Rent 1</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.rent1}}</div>  
+     <div class="description">Rent 2</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.rent2}}</div>  
+     <div class="description">Rent 3</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.rent3}}</div>  
+     <div class="description">Rent 4</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.rent4}}</div>  
+     <div class="description">Rent Hotel</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.rentH}}</div> 
+     <div style="font-weight: bold;" class="description">Mortgage </div>
+     <div style="font-weight: bold;" class="monopoly-money"><i class="{{currency}}"></i>{{card9.mortgage}}</div>         
+  </div>
+
+  <div class="monopoly-card_footer">
+     <div class="description">Houses cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.housecost}}</div>
+     <div class="description">Hotels cost</div>
+     <div class="monopoly-money"><i class="{{currency}}"></i>{{card9.hotelcost}}</div>  
+  </div>  
+</div>
+
+
+
+</div>
+
+
+
+<!-- partial -->
+  
+</body>
+</html>
