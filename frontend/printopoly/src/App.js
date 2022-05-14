@@ -542,13 +542,13 @@ function App() {
                   }}
 
               />       
-              <label className='desc'> Group Images</label>  
+              <label className='desc'> Group Images (check for performance)</label>  
             </div>
         </div>
         {(loading==="loading") ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
         {(loading==="none") ? <div className='heading2'> <h1>Press Print to Download Files</h1></div>: <></>}
         {(loading==="done") ? <div className='heading2'> <h1>Download Successful</h1></div>: <></>}
-        {(loading==="error") ? <div className='heading2'> <h1>Error occured. Try again by refreshing the page. If this continues to happen just give up. This is barely a functioning project.</h1></div>: <></>}
+        {(loading==="error") ? <div className='heading2'> <h1>Error occured. Try again by refreshing the page. If this continues to happen try  Group Images.</h1></div>: <></>}
         <button disabled={loading==="loading" || loading==="error"}  className='submitButton' onClick={doit}>Print</button>
       </div>
       <div className='right'>
