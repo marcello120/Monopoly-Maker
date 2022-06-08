@@ -1,4 +1,7 @@
 import React from 'react'
+import Dice1 from '../images/inverted-dice-1.svg'
+import Dice2 from '../images/inverted-dice-2.svg'
+import Dice3 from '../images/inverted-dice-3.svg'
 
 const About = (props) => {
 
@@ -7,33 +10,51 @@ const About = (props) => {
     }
 
 
-  return (
-      <div className='aboutpage'>
-    <div >Printopoly</div>
-    <div>Create your own monopoly game!</div>
+    return (
+        <div className='aboutpage'>
 
-    <div className='neu'>
+            <div className='titleContainer1'>
+                <div className='title1'>PRINTOPOLY</div>
+                <div className='subtitle1'>Create your own monopoly game!</div>
+            </div>
+            <div className='desccontainer1'>
+                <div className='dicecontainer'> 
+                <img alt='dice1' src={Dice1} className='dice'/>
+                <div className='para'>Printopoly is an online tool that lets you create custom monopoly boards. <br></br> Choose the property names, color schemes, and even icons to make the experience truly unique. </div>
+                <img alt='dice2' src={Dice2} className='dice'/>
+                <div className='para'>The website lets you customize every aspect of your board, from the property names and look, to the Chance and Community Chest cards. You can even choose your own currency.</div>
+                <img alt='dice3' src={Dice3} className='dice'/>
+                <div className='para'>Create the monopoly board fitting your exact idea and see your changes live as you make them in the instant preview mode.</div>
+                </div>
+                <div className='build'> Click the BUILD button to start creating your own board</div>
 
-    <div cla>Printopoly is an online tool that lets you create custom monopoly boards. Choose the property names, color schemes, and even icons to make the experience truly unique. </div>
-    <div>Our website lets you customize every aspect of your board, from the property names and look, to the Chance and Community Chest cards. You can even choose your own currency.</div>
-    <div>Create the monopoly board fitting your exact idea and see your changes live as you make them in our instant preview mode.</div>
-    <div>The site will generate a high res image of the monopoly board as well as the corresponding property cards, which can be downladed individaully or already grouped to fit and A4 page.</div>
-    <div> Click the BUILD button to start creating your own board</div>
+                <div className='buttoncontainer'>
+                <button onClick={maker} className='buildButton'>BUILD</button>
+                </div>
+                <div className='blurb'>The site will generate a high resolution image of the monopoly board as well as the corresponding property cards, which can be downladed individaully or already grouped to fit and A4 page.</div>
 
-    <button onClick={maker} className='submitButton'>BUILD</button>
+                
+                <div className='adcontainer'>
+                {/* ad 1 */}
+                <div className='ad'>"With our easy-to-use online tools, you can create a personalized board that is sure to make your next game night a hit!"</div>
+
+                {/* ad 2 */}
+                <div className='ad'>"Whether you're looking to create a fun game for your family or friends, or you're looking for a unique gift, Printopoly is the perfect place for you!"</div>
+                </div>
 
 
-    {/* ad 1 */}
-    <div>Looking to add a personal touch to your next game of Monopoly? Look no further than Printopoly! With our easy-to-use online tools, you can create a personalized board that is sure to make your next game night a hit!</div>
+        
+                <div className='upcoming'>
+                <div className='upcomingtitle'>Upcoming features:</div>
+                <div className='upcomingfeatures'> Custom Money <br/> Custom Community Chest and Chance Cards,<br/> 4K Board,<br/> Starting Templates </div>
+                </div>
 
-    {/* ad 2 */}
-    <div>Whether you're looking to create a fun game for your family or friends, or you're looking for a unique gift, Printopoly is the perfect place for you!</div>
 
-    <div>Upcoming features:</div>
-    <div>Custom Money, Custom Community Chest and Chance Cards, 4K Board, </div>
+            </div>
 
-    </div>
-    </div>
+            <div className='bottomscript'> Created by Marcell Sarosi. Please do not sue me Hasbro.</div>
+
+        </div>
     )
 }
 

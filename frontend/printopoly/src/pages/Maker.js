@@ -11,10 +11,10 @@ import QuadPropertyInputWithIcon from '../components/QuadPropertyInputWithIcon';
 import TilePreview from '../components/TilePreview';
 import TilePreviewWithIcon from '../components/TilePreviewWithIcon';
 
-import { FaDice } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 
-const Maker = (props) => {
+const Maker = ({setSelected,master,setMaster}) => {
     const brownRef = useRef();
     const cyanRef = useRef();
     const purpleRef = useRef();
@@ -86,78 +86,6 @@ const Maker = (props) => {
   
     const [grouping, setGrouping] = useState(true);
   
-  
-    const [master, setMaster] = useState(
-      {
-        title: 'Printopoly',
-        currency: 'FaDollarSign',
-  
-        railicon: 'FaTrain',
-        chesticon: 'FaBoxOpen',
-        chanceicon: 'FaDice',
-        util1icon: 'FaBriefcase',
-        util2icon: 'FaShoppingCart',
-        gojailicon: 'FaGavel',
-        parkingicon: 'FaParking',
-        jailicon: 'FaRegFrown',
-        tax1icon: 'FaMoneyBillAlt',
-        tax2icon: 'FaMoneyBillAlt',
-  
-        brown1: "brown1",
-        brown2: "brown2",
-        cyan1: "cyan1",
-        cyan2: "cyan2",
-        cyan3: "cyan3",
-        purple1: "purple1",
-        purple2: "purple2",
-        purple3: "purple3",
-        orange1: "orange1",
-        orange2: "orange2",
-        orange3: "orange3",
-        red1: "red1",
-        red2: "red2",
-        red3: "red3",
-        yellow1: "yellow1",
-        yellow2: "yellow2",
-        yellow3: "yellow3",
-        green1: "green1",
-        green2: "green2",
-        green3: "green3",
-        blue1: "blue1",
-        blue2: "blue2",
-        rail1: "rail1",
-        rail2: "rail2",
-        rail3: "rail3",
-        rail4: "rail4",
-        util1: "util1",
-        util2: "util2",
-        chance: "chance",
-        chest: "chest",
-        tax1: "tax1",
-        tax2: "tax2",
-  
-        jail: "jail",
-        parking: "parking",
-  
-        browncolor: "#964B00",
-        cyancolor: "#00FFFF",
-        purplecolor: "#6a0dad",
-        orangecolor: "#FFA500",
-        redcolor: "#FF0000",
-        yellowcolor: "#FFFF00",
-        greencolor: "#00FF00",
-        bluecolor: "#0000FF",
-        railcolor: "#000000",
-        util1color: "#FFFF00",
-        util2color: "#0000FF",
-        chancecolor: "#FFA500",
-        chestcolor: "#0000FF",
-        tax1color: "#FFA500",
-        tax2color: "#6a0dad",
-        parkingcolor: "#FF0000",
-        gojailcolor: "#000000",
-      }
-    );
   
     const cardMaster = {
       brown1: {
@@ -472,7 +400,7 @@ const Maker = (props) => {
 
     const back = () => {
         console.log("back");
-        props.setPage("About")
+        setSelected("About")
     }
   
   
@@ -480,7 +408,7 @@ const Maker = (props) => {
     return (
       <div className="App">
             {/* <div className='hello'><FaDice size={50}/></div> */}
-            <button className='hello' onClick={back}><FaDice size={50}/></button>
+            <button className='hello' onClick={back}><FaArrowLeft size={50}/></button>
         <div className='left'>
           <div className='heading2'> <h1>Title</h1></div>
           <div className='neu'>
@@ -550,7 +478,7 @@ const Maker = (props) => {
                 <label className='desc'> Group Images (check for performance)</label>  
               </div>
           </div>
-          {(loading==="loading") ? <div className='heading2'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
+          {(loading==="loading") ? <div className='heading2loading'> <h1>Loading... This will take a minute...  Do Not Panic!</h1></div>: <></>}
           {(loading==="none") ? <div className='heading2'> <h1>Press Print to Download Files</h1></div>: <></>}
           {(loading==="done") ? <div className='heading2'> <h1>Download Successful</h1></div>: <></>}
           {(loading==="error") ? <div className='heading2'> <h1>Error occured. Try again by refreshing the page. If this continues to happen try  Group Images.</h1></div>: <></>}
